@@ -1,0 +1,9 @@
+@import "./markdown.scss";
+
+html, body {
+  height: screen;
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto", sans-serif;
+  @apply bg-gradient-to-br from-[#cdcdcd] to-[#efefefef];
+}
