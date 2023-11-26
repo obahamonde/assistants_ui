@@ -230,7 +230,6 @@ type FunctionToolCall = {
 	type: "function";
 };
 
-
 export type {
 	Assistant,
 	Thread,

@@ -7,6 +7,7 @@ const showModal = ref<boolean>(false);
 const showSchema = ref<boolean>(false);
 const selectedFunc = ref<FunctionDefinition | null>(null);
 const showForm = ref<boolean>(false);
+const text = ref<string>("");
 const getFunctions = async () => {
     await request("/api/functions", {});
     funcs.value = response.value;
@@ -51,6 +52,20 @@ onMounted(async () => {
                    
                     {{ JSON.stringify(selectedFunc!.parameters.properties, null, 2) }}
                 </pre>
+               
+                <UserFunctions :url="`/api/functions/${selectedFunc.name}`" v-if="selectedFunc">
+                <template #default="{data, err, pub}">
+                    
+                <div>
+                    {{ data }}
+                </div>
+               
+                    <Icon icon="mdi-play" class="btn-icon rf x2" @click="pub(text)" />
+              
+                    <input type="text" v-model="text" class="w-full px-4 py-2 rounded-lg mx-2" placeholder="Type a message" />
+                
+                </template>
+                </UserFunctions>
             </template>
         </Modal>
           </div>
@@ -64,7 +79,7 @@ onMounted(async () => {
 					<GradientButton text="New Assistant" @click="showForm=!showForm" class="bottom-4 right-4 absolute"/>
 					<Modal v-if="showForm" @close="showForm = false" class="max-w-128 min-w-72 mx-auto"  >
 						<template #body>
-							<p class="bg-gradient-to-bl from-gray-400 to-gray-400 via-gray-500 text-accent sh rounded-lg col center p-8 m-2 animate-gradient">
+							<p class="bg-gradient-to-bl from-gray-400 to-gray-400 via-gray-5000 text-accent sh rounded-lg col center p-8 m-2 animate-gradient">
   <i class="text-title">New Assistant Onboarding</i>
   <form class="col center gap-4 p-4 min-w-72">
     <div class="relative m-2">

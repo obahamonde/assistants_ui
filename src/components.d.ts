@@ -10,7 +10,7 @@ declare module 'vue' {
     '[id]': typeof import('./components/chat/[id].vue')['default']
     Assistants: typeof import('./components/Assistants.vue')['default']
     Auth: typeof import('./components/Auth.vue')['default']
-    Button: typeof import('./components/Button.vue')['default']
+    Button: typeof import('./components/GradientButton.vue')['default']
     Chatbot: typeof import('./components/Chatbot.vue')['default']
     ChatBotComponent: typeof import('./components/ChatBotComponent.vue')['default']
     ChatMessage: typeof import('./components/ChatMessage.vue')['default']
@@ -30,6 +30,7 @@ declare module 'vue' {
     Threads: typeof import('./components/Threads.vue')['default']
     TipTap: typeof import('./components/TipTap.vue')['default']
     Toolbar: typeof import('./components/Toolbar.vue')['default']
+    UserFunctions: typeof import('./components/UserFunctions.vue')['default']
     UserInput: typeof import('./components/UserInput.vue')['default']
   }
 }

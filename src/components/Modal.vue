@@ -3,7 +3,7 @@
     <div class="fixed z-10 my-12 inset-0 overflow-auto mb-16 animate-fade-in" @click.self="emit('close')">
       <div class="flex items-center justify-center">
         <div class="rounded-lg shadow-lg p-8 backdrop-blur-lg sh">
-           <Icon icon="mdi-close" class="x2 text-warning right-4 absolute cp"
+           <Icon icon="mdi-close" class="x2 text-warning right-2 absolute cp"
            @click="emit('close')"
            />
           <div class="modal-header">
