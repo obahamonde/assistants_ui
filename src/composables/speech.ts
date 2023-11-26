@@ -3,6 +3,7 @@ export const useSpeech = () => {
 		continuous: true,
 	});
 	const SpeechGrammarList =
+		// @ts-ignore
 		window.SpeechGrammarList || window.webkitSpeechGrammarList;
 	const speechRecognitionList = new SpeechGrammarList();
 	speechRecognitionList.addFromString(1);

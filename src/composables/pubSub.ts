@@ -1,5 +1,3 @@
-import { UnwrapRef } from "vue";
-
 export const usePubSub = <T>(url: string, options?: EventSourceInit) => {
 	const data = ref<T>(undefined as any as T);
 	const err = ref<any>(null)
