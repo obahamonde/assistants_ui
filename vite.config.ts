@@ -28,7 +28,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "http://localhost:8080/api",
+        target: "https://www.aiofauna.com/api",
         changeOrigin: true,
         rewrite: (path:string) => path.replace(/^\/api/, ""),
       },

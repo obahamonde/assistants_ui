@@ -240,4 +240,6 @@ export type {
 	CodeToolCall,
 	MessageCreationStepDetails,
 	ToolCallsStepDetails,
+	FunctionDefinition,
+	ToolFunction
 }
