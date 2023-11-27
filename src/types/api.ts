@@ -32,8 +32,6 @@ type FunctionDefinition = {
   description?: string;
 };
 
-
-
 // Thread
 type Thread = {
   user?: string;
@@ -62,14 +60,14 @@ type Run = {
   required_action?: RequiredAction;
   started_at?: number;
   status:
-  | "queued"
-  | "in_progress"
-  | "requires_action"
-  | "cancelling"
-  | "cancelled"
-  | "failed"
-  | "completed"
-  | "expired";
+    | "queued"
+    | "in_progress"
+    | "requires_action"
+    | "cancelling"
+    | "cancelled"
+    | "failed"
+    | "completed"
+    | "expired";
   thread_id: string;
   tools: Array<
     | ToolAssistantToolsCode
@@ -186,10 +184,10 @@ type FileObject = {
   filename: string;
   object: "file";
   purpose:
-  | "fine-tune"
-  | "fine-tune-results"
-  | "assistants"
-  | "assistants_output";
+    | "fine-tune"
+    | "fine-tune-results"
+    | "assistants"
+    | "assistants_output";
   status: "uploaded" | "processed" | "error";
   status_details: string;
 };

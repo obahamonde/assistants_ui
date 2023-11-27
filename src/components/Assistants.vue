@@ -12,7 +12,9 @@ const getFunctions = async () => {
     await request("/api/functions", {});
     funcs.value = response.value;
 };
-
+const assistantName = ref<string>("");
+const instructions = ref<string>("");
+const description = ref<string>("");
 const openModal = (func: FunctionDefinition) => {
     selectedFunc.value = func;
     showModal.value = true;
@@ -80,28 +82,34 @@ onMounted(async () => {
 						<template #body>
 							<p class="bg-gradient-to-bl from-gray-400 to-gray-400 via-gray-5000 text-accent sh rounded-lg col center p-8 m-2 animate-gradient">
   <i class="text-title">New Assistant Onboarding</i>
-  <form class="col center gap-4 p-4 min-w-72">
-    <div class="relative m-2">
-      <label :class="{ 'label-move': labelMoveName }" for="name" class="absolute left-2 top-2 transition-all duration-200 text-black">Name</label>
+  <form class="col center gap-4 p-4 min-w-72 pr-12">
+    <div class="relative m-2 w-full">
+      <label :class="{ 'label-move': labelMoveName }" for="name" class="absolute left-6 top-2 transition-all duration-200 text-black"
+      :style="assistantName.length && !labelMoveName ? 'transform: translateY(-25px);font-size: 0.75rem;' : ''"
+      >Name</label>
       <input id="name" type="text"
-        class="bg-gray-300 w-full text-black sh rounded-lg col center p-2 border-b focus:outline-none focus:border-black"
-     
+        class="bg-gray-300 w-full border-none mx-2 p-2 text-black sh rounded-lg col center p-2 border-b focus:outline-none focus:border-black"
+        v-model="assistantName"
         @focus="labelMoveName = true"
         @blur="labelMoveName = false" />
     </div>
-    <div class="relative m-2">
-      <label :class="{ 'label-move': labelMoveDescription }" for="description" class="absolute left-4 top-4 transition-all duration-200 text-black">Description</label>
+    <div class="relative m-2 p-2 w-full">
+      <label :class="{ 'label-move': labelMoveDescription }" for="description" class="absolute left-6 top-6 transition-all duration-200 text-black"
+      :style="description.length && !labelMoveDescription ? 'transform: translateY(-25px);font-size: 0.75rem;' : ''"
+      >Description</label>
       <textarea id="description"
-        class="bg-gray-300 w-full text-black sh rounded-lg col center p-2 m-2 border-b focus:outline-none focus:border-black"
-   
+        v-model="description"
+        class="bg-gray-300 w-full  text-black sh rounded-lg col center px-2 m-2 border-b focus:outline-none focus:border-black"
+        rows="6"
         @focus="labelMoveDescription = true"
         @blur="labelMoveDescription = false" />
     </div>
-    <div class="relative m-2">
-      <label :class="{ 'label-move': labelMoveInstructions }" for="instructions" class="absolute left-4 top-4 transition-all duration-200 text-black">Instructions</label>
-        <textarea id="instructions"
-            class="bg-gray-300 w-full text-black sh rounded-lg col center p-2 m-2 border-b focus:outline-none focus:border-black"
-     
+    <div class="relative m-2 p-2 w-full">
+      <label :class="{ 'label-move': labelMoveInstructions }" for="instructions" class="absolute left-6 top-6 transition-all duration-200  text-black" :style="instructions.length && !labelMoveInstructions ? 'transform: translateY(-25px);font-size: 0.75rem;' : ''"
+      >Instructions</label>
+        <textarea id="instructions" rows="6"
+            class="bg-gray-300 w-full  sh rounded-lg col center p-2 m-2 border-b focus:outline-none focus:border-black"
+            v-model="instructions"
             @focus="labelMoveInstructions = true"
             @blur="labelMoveInstructions = false" />
     </div>

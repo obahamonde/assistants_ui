@@ -5,6 +5,7 @@ import type {
   Notification,
   User,
   Assistant,
+  FileObject,
 } from "~/types";
 
 export const useStore = defineStore("state", () => {
@@ -14,6 +15,7 @@ export const useStore = defineStore("state", () => {
     messages: [] as ThreadMessage[],
     thread: null as Thread | null,
     assistant: null as Assistant | null,
+    files: [] as FileObject[],
   });
 
   const setState = (newState: any) => {

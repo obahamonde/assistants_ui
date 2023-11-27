@@ -5,7 +5,7 @@ const props = defineProps<{
   user: User;
 }>();
 const { state } = useStore();
-const drawer = ref(false);
+const drawer = ref(true);
 const localState = reactive({
   threads: [] as Thread[],
 });
@@ -18,6 +18,19 @@ const addThread = async () => {
     await request(`/api/thread/${props.user.sub}?title=[New Thread]`, {
       method: "POST",
     });
+    await getThreads();
+  } catch (e) {
+    console.log(e);
+  }
+};
+const delThread = async (thread: Thread) => {
+  try {
+    await request(
+      `/api/thread/${props.user.sub}?id=${thread.id}&title=${thread.title!}`,
+      {
+        method: "DELETE",
+      },
+    );
     await getThreads();
   } catch (e) {
     console.log(e);
@@ -57,6 +70,11 @@ onMounted(async () => {
       <p class="text-primary">
         {{ new Date(thread.created_at * 1000).toLocaleString() }}
       </p>
+      <Icon
+        icon="mdi-delete"
+        class="cp x1 opacity-50 hover:opacity-100 scale text-warning hover:text-error"
+        @click="delThread(thread)"
+      />
     </div>
   </div>
 </template>

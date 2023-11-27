@@ -4,7 +4,10 @@ useFavicon("/favicon.png");
 const { state } = useStore();
 </script>
 <template>
-  <div v-if="state.user" class="row w-full h-screen overflow-auto min-w-100vw">
+  <div
+    v-if="state.user"
+    class="row w-full h-full h-screen overflow-auto min-w-100vw"
+  >
     <Threads :user="state.user" />
     <UserInput :user="state.user" />
     <Assistants />
