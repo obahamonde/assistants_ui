@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { FunctionDefinition, ToolFunction, Assistant } from "@/types";
+import type { FunctionDefinition, Assistant } from "@/types";
 const { request, response } = useRequest<FunctionDefinition[]>();
 
 const funcs = ref<FunctionDefinition[]>([]);
@@ -26,7 +26,7 @@ const toggleSchema = () => {
 const assistants = ref<Assistant[]>([])
 const labelMoveName = ref(false);
 const labelMoveDescription = ref(false);
-
+const labelMoveInstructions = ref(false);
 
 onMounted(async () => {
     await getFunctions();
@@ -43,6 +43,7 @@ onMounted(async () => {
 
         <Modal v-if="showModal" @close="showModal = false" class="max-w-128 min-w-72 mx-auto"  >
             <template #body>
+                <section class="col center">
                 <p class="text-xs text-white rounded-lg col gap-4 center p-2 m-2" :style="{  backgroundImage: `url(/${selectedFunc!.name.toLowerCase()}.png)`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }">
 									<i class="text-#cf0 bg-black sh rounded-lg px-4 py-2 opacity-70">{{ selectedFunc!.name }}</i>
                     <p class=" backdrop-blur-md p-1">{{ selectedFunc?.description }}</p>
@@ -54,18 +55,16 @@ onMounted(async () => {
                 </pre>
                
                 <UserFunctions :url="`/api/functions/${selectedFunc.name}`" v-if="selectedFunc">
-                <template #default="{data, err, pub}">
+                <template #default="{data, pub}">
                     
                 <div>
                     {{ data }}
                 </div>
-               
-                    <Icon icon="mdi-play" class="btn-icon rf x2" @click="pub(text)" />
-              
-                    <input type="text" v-model="text" class="w-full px-4 py-2 rounded-lg mx-2" placeholder="Type a message" />
+                    <textarea type="text" v-model="text" class="w-full px-4 py-2 rounded-lg mx-2" placeholder="Type a message" @keydown.enter="pub(text)" />
                 
                 </template>
                 </UserFunctions>
+            </section>
             </template>
         </Modal>
           </div>
@@ -98,6 +97,14 @@ onMounted(async () => {
         @focus="labelMoveDescription = true"
         @blur="labelMoveDescription = false" />
     </div>
+    <div class="relative m-2">
+      <label :class="{ 'label-move': labelMoveInstructions }" for="instructions" class="absolute left-4 top-4 transition-all duration-200 text-black">Instructions</label>
+        <textarea id="instructions"
+            class="bg-gray-300 w-full text-black sh rounded-lg col center p-2 m-2 border-b focus:outline-none focus:border-black"
+     
+            @focus="labelMoveInstructions = true"
+            @blur="labelMoveInstructions = false" />
+    </div>
     <GradientButton text="Create" class="col center p-2 m-2 w-fi" />
   </form>
 </p>
@@ -124,7 +131,7 @@ onMounted(async () => {
     animation: anime 4s linear infinite;
 }
 .label-move {
-  transform: translateY(-25px);
+  transform: translateY(-25px); 
   font-size: 0.75rem;
 }
 </style>

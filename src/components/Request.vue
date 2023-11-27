@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { useRequest } from "~/composables/request";
-interface T { id:string }
-const { request, response, err, loading, lastResponseTime } =
-  useRequest<T>();
+interface T {
+  id: string;
+}
+const { request, response, err, loading, lastResponseTime } = useRequest<T>();
 
 const allowed = computed(() => {
   const now = Number(useNow().value);
@@ -49,7 +50,7 @@ const fetchData = async () => {
 const { state } = useStore();
 
 onMounted(async () => {
-  await request(props.url, props.options,props.refetch);
+  await request(props.url, props.options, props.refetch);
 });
 
 watch(rxProps, fetchData);
@@ -59,9 +60,7 @@ watchEffect(() => {
     state.notifications.push({
       status: "error",
       message:
-        typeof err.value === "string"
-          ? err.value
-          : JSON.stringify(err.value),
+        typeof err.value === "string" ? err.value : JSON.stringify(err.value),
     });
   }
 });
@@ -73,8 +72,8 @@ const loaderActive = computed(() => loading.value);
   <div v-if="!err && !loaderActive && response">
     <slot :="response"></slot>
   </div>
-  <div v-else-if="{err}">
-    <slot name="error" :error="{err}">
+  <div v-else-if="{ err }">
+    <slot name="error" :error="{ err }">
       <!-- Add default error handling UI here -->
       <p class="text-error">
         An error occurred:

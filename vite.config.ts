@@ -30,12 +30,12 @@ export default defineConfig({
       "/api": {
         target: "https://www.aiofauna.com/api",
         changeOrigin: true,
-        rewrite: (path:string) => path.replace(/^\/api/, ""),
+        rewrite: (path: string) => path.replace(/^\/api/, ""),
       },
     },
     watch: {
       usePolling: true,
-      ignored: ["**/node_modules/**", "**/dist/**", "**/.git/**", "**/api/**"]
+      ignored: ["**/node_modules/**", "**/dist/**", "**/.git/**", "**/api/**"],
     },
   },
   build: {
@@ -85,6 +85,6 @@ export default defineConfig({
         });
       },
     }),
-   VueDevTools(),
+    VueDevTools(),
   ],
 });

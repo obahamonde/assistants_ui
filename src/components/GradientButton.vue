@@ -1,23 +1,27 @@
 <script setup lang="ts">
 const props = defineProps<{
-	text: string;
+  text: string;
 }>();
 </script>
 <template>
-<div>
-
-
-<button class="v-gradient">{{ props.text }}
-  <div class="v-gradient-child"></div>
-</button>
-
-</div>
+  <div>
+    <button class="v-gradient">
+      {{ props.text }}
+      <div class="v-gradient-child"></div>
+    </button>
+  </div>
 </template>
 <style scoped>
-
-.v-gradient, .v-gradient-child {
+.v-gradient,
+.v-gradient-child {
   @apply text-sm px-4 py-2 text-center align-middle text-white rounded-md cursor-pointer scale;
-  background: linear-gradient(-45deg, theme('colors.orange.400'), theme('colors.pink.400'), theme('colors.blue.400'), theme('colors.teal.400'));
+  background: linear-gradient(
+    -45deg,
+    theme("colors.orange.400"),
+    theme("colors.pink.400"),
+    theme("colors.blue.400"),
+    theme("colors.teal.400")
+  );
   background-size: 600%;
   animation: anime 6s linear infinite;
 }
@@ -39,5 +43,4 @@ const props = defineProps<{
     background-position: 0% 50%;
   }
 }
-
 </style>

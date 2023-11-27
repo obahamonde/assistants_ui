@@ -18,12 +18,17 @@ const router = createRouter({
 });
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
-createApp(App).use(pinia).component("Icon", Icon).use(
-  createAuth0({
-    domain: "dev-tvhqmk7a.us.auth0.com",
-    clientId: "53p0EBRRWxSYA3mSywbxhEeIlIexYWbs",
-    authorizationParams: {
-      redirect_uri: window.location.origin,
-    },
-  }),
-).use(router).mount("#app");
+createApp(App)
+  .use(pinia)
+  .component("Icon", Icon)
+  .use(
+    createAuth0({
+      domain: "dev-tvhqmk7a.us.auth0.com",
+      clientId: "53p0EBRRWxSYA3mSywbxhEeIlIexYWbs",
+      authorizationParams: {
+        redirect_uri: window.location.origin,
+      },
+    }),
+  )
+  .use(router)
+  .mount("#app");

@@ -1,8 +1,13 @@
 <script setup lang="ts">
 import { useAuth0 } from "@auth0/auth0-vue";
 const { state } = useStore();
-const { isAuthenticated, logout, loginWithRedirect, getAccessTokenSilently, user } =
-  useAuth0();
+const {
+  isAuthenticated,
+  logout,
+  loginWithRedirect,
+  getAccessTokenSilently,
+  user,
+} = useAuth0();
 
 onMounted(async () => {
   await authorize();
@@ -34,7 +39,7 @@ watch(isAuthenticated, async (isAuthenticated) => {
 <template>
   <Notifier />
   <div v-if="isAuthenticated && state.user">
-    <slot :user="state.user" :logout="logout"/>
+    <slot :user="state.user" :logout="logout" />
   </div>
   <div v-else>
     <div class="container">

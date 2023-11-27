@@ -7,13 +7,13 @@ export const useRequest = <T>() => {
   const lastResponseTime = ref<Date>();
   const request = async (
     url: string,
-    options: RequestInit,
-    refetch?: boolean
+    options?: RequestInit,
+    refetch?: boolean,
   ) => {
-    const { data, error, isFetching } = await useFetch(url, options, {
+    const { data, error, isFetching } = await useFetch(url, options || {}, {
       refetch: refetch || false,
     }).json();
-    console.log(unref(data))
+    console.log(unref(data));
     response.value = unref(data) as UnwrapRef<T>;
     err.value = unref(error) as any;
     loading.value = unref(isFetching.value) as boolean;

@@ -3,8 +3,8 @@ import type { User, FileObject, Message } from "~/types";
 const props = defineProps<{
   user: User;
 }>();
-  const { state } = useStore();
-const {  response, request } = useRequest<FileObject[]>();
+const { state } = useStore();
+const { response, request } = useRequest<FileObject[]>();
 const files = ref<FileObject[]>([]);
 const text = ref("");
 const show = ref(false);
@@ -17,18 +17,18 @@ const body = computed<Message>(() => {
     thread_id: state.thread ? state.thread.id : "",
   };
 });
-const onDrop = async(files:File[] | null ,event:DragEvent)=>{
+const onDrop = async (files: File[] | null, event: DragEvent) => {
   if (!files) return;
   event.preventDefault();
   const promises = files.map(async (f) => {
     await addFile(f, props.user);
   });
-    await Promise.all(promises);
-    await getFiles()
-}
+  await Promise.all(promises);
+  await getFiles();
+};
 const { isOverDropZone } = useDropZone(dropzoneRef, {
-  onDrop
-})
+  onDrop,
+});
 const addFile = async (f: File, user: User) => {
   try {
     const formData = new FormData();
@@ -41,10 +41,10 @@ const addFile = async (f: File, user: User) => {
     console.log(e);
   }
 };
-const getFiles = async()=>{
-  await request(`/api/fileobject/${props.user.sub}`,{method:"GET"});
-  files.value = response.value
-}
+const getFiles = async () => {
+  await request(`/api/fileobject/${props.user.sub}`, { method: "GET" });
+  files.value = response.value;
+};
 const inputFiles = () => {
   const input = document.createElement("input");
   input.type = "file";
@@ -52,13 +52,13 @@ const inputFiles = () => {
   input.multiple = true;
   input.onchange = async (e) => {
     //@ts-ignore
-    const files = e!.target.files as File[]
+    const files = e!.target.files as File[];
     if (!files) return;
     const promises = Array.from(files).map(async (f) => {
       await addFile(f, props.user);
     });
     await Promise.all(promises);
-    await getFiles()
+    await getFiles();
   };
   input.click();
 };
@@ -90,64 +90,87 @@ const deleteFile = async (file: FileObject) => {
     await request(`/api/fileobject/${props.user.sub}?id=${file.id}`, {
       method: "DELETE",
     });
-    await getFiles()
+    await getFiles();
   } catch (e) {
     console.log(e);
   }
 };
-onMounted(async()=>{
-  await getFiles()
-})
+onMounted(async () => {
+  await getFiles();
+});
 </script>
 <template>
-    <input
-      :multiple="true"
-      type="file"
-      accept="*/*"
-      class="hidden"
-    />
-  <section class="overflow-auto  w-full">
-   <div class="backdrop-blur-md" ref="dropzoneRef">
-    <div class="px-12 py-4 min-w-128 max-w-256 cursor-pointer row center" :class="isOverDropZone ? 'borded-dashed' : 'border-none'">
-        <textarea v-model="text" class="w-full px-4 py-2 rounded-lg mx-2" placeholder="Type a message" 
-         @keydown.enter.prevent="addMessage(body)"
+  <input :multiple="true" type="file" accept="*/*" class="hidden" />
+  <section class="overflow-auto w-full">
+    <div class="backdrop-blur-md" ref="dropzoneRef">
+      <div
+        class="px-12 py-4 min-w-128 max-w-256 cursor-pointer row center"
+        :class="isOverDropZone ? 'borded-dashed' : 'border-none'"
+      >
+        <textarea
+          v-model="text"
+          class="w-full px-4 py-2 rounded-lg mx-2"
+          placeholder="Type a message"
+          @keydown.enter.prevent="addMessage(body)"
         />
-       <button class="btn-icon col center" v-if="files.length>0"  @click="show=!show">
-        <Icon class="x2" 
-        title="Show Uploaded Files"
-        icon="mdi-upload" />
-      </button>
-      <button class="btn-icon col center" @click="inputFiles">
-        <Icon class="x2" icon="mdi-paperclip"
-        title="Attach Files"
-        />
-      </button>
+        <button
+          class="btn-icon col center"
+          v-if="files.length > 0"
+          @click="show = !show"
+        >
+          <Icon class="x2" title="Show Uploaded Files" icon="mdi-upload" />
+        </button>
+        <button class="btn-icon col center" @click="inputFiles">
+          <Icon class="x2" icon="mdi-paperclip" title="Attach Files" />
+        </button>
       </div>
-    </div> 
+    </div>
     <div class="grid6" v-if="show">
-     <div v-for="file in files" :key="file.id" class="p-0 m-1 col center">
-    <div v-if="file.status_details.includes('image')">
-  <img :src="file.url" class=" x8" />
-  </div>
-  <div v-else-if="file.status_details.includes('pdf') || file.status_details.includes('document') || file.status_details.includes('office')">
-    <iframe :src="'https://docs.google.com/gview?url='+file.url+'&embedded=true'" class=" x8"></iframe>
+      <div v-for="file in files" :key="file.id" class="p-0 m-1 col center">
+        <div v-if="file.status_details.includes('image')">
+          <img :src="file.url" class="x8" />
+        </div>
+        <div
+          v-else-if="
+            file.status_details.includes('pdf') ||
+            file.status_details.includes('document') ||
+            file.status_details.includes('office')
+          "
+        >
+          <iframe
+            :src="
+              'https://docs.google.com/gview?url=' + file.url + '&embedded=true'
+            "
+            class="x8"
+          ></iframe>
+        </div>
+        <div v-else class="sh rounded">
+          <a :href="file.url" target="_blank" class="text-accent x8">{{
+            file.id
+          }}</a>
+        </div>
+        <span class="text-xs text-center">
+          {{ new Date(file.created_at * 1000).toLocaleString() }}</span
+        >
+        <span class="text-xs text-center"
+          >{{ (file.bytes / 1000 ** 2).toFixed(2) }}MB</span
+        >
+        <p class="row center">
+          <input
+            type="checkbox"
+            :value="file.id"
+            v-model="body.file_ids"
+            :checked="body.file_ids.includes(file.id)"
+            @click="attachFile(file)"
+            class="x1"
+          />
+          <Icon
+            icon="mdi-delete"
+            class="x1 text-warning hover:text-error scale cp"
+            @click="deleteFile(file)"
+          />
+        </p>
+      </div>
     </div>
-    <div v-else class="sh rounded">
-    <a :href="file.url" target="_blank" class="text-accent  x8">{{ file.id }}</a>
-    </div>
-    <span class="text-xs text-center">    {{new Date(file.created_at*1000).toLocaleString() }}</span>
-    <span class="text-xs text-center">{{ (file.bytes/1000**2).toFixed(2) }}MB</span>
-    <p class="row center">
-       <input
-        type="checkbox"
-        :value="file.id"
-        v-model="body.file_ids"
-        :checked="body.file_ids.includes(file.id)"
-        @click="attachFile(file)"
-        class="x1"
-      />
-       <Icon icon="mdi-delete" class="x1 text-warning hover:text-error scale cp" @click="deleteFile(file)" /></p>
-    </div>
-    </div>
-    </section>
+  </section>
 </template>

@@ -1,5 +1,11 @@
 import { defineStore, acceptHMRUpdate } from "pinia";
-import type { Thread, ThreadMessage, Notification, User, Assistant } from "~/types";
+import type {
+  Thread,
+  ThreadMessage,
+  Notification,
+  User,
+  Assistant,
+} from "~/types";
 
 export const useStore = defineStore("state", () => {
   const state = reactive({

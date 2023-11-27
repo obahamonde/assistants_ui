@@ -1,7 +1,5 @@
 <template>
-  <div>
- 404 Not Found
-  </div>
+  <div>404 Not Found</div>
 </template>
 
 <route lang="yaml">
