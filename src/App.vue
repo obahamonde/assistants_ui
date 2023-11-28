@@ -3,9 +3,7 @@ useTitle("Home");
 useFavicon("/favicon.png");
 </script>
 <template>
-  <Auth v-slot="{ user }">
-    <RouterView :user="user" />
-  </Auth>
+    <RouterView/>
 </template>
 <style>
 #app,

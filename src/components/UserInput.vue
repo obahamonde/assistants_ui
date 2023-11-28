@@ -10,7 +10,7 @@ const { state } = useStore();
     <FilesInput v-if="props.user && state.thread" :user="props.user">
       <MessageInput />
     </FilesInput>
-    <article class="content-wrapper" v-if="state.thread && state.assistant">
+    <article class="content-wrapper" v-if="state.thread">
       <slot :thread="state.thread" :assistant="state.assistant" />
     </article>
     <article class="content-wrapper" v-else>

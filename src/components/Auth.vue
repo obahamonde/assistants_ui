@@ -14,6 +14,7 @@ onMounted(async () => {
 });
 
 const authorize = async () => {
+  if (!isAuthenticated.value) return;
   const token = await getAccessTokenSilently();
   const res = await fetch("/api/auth", {
     method: "POST",
@@ -43,9 +44,7 @@ watch(isAuthenticated, async (isAuthenticated) => {
   </div>
   <div v-else>
     <div class="container">
-      <Icon icon="mdi-loading" class="animate-spin x2" />
-      <h1 class="text-2xl">Loading...</h1>
-      <button class="btn-get" @click="loginWithRedirect()">Login</button>
+     <slot name="landing" :login="loginWithRedirect" />
     </div>
   </div>
 </template>

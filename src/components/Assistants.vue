@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import type { FunctionDefinition, Assistant, User } from "@/types";
-import { on } from "events";
 const { request, response } = useRequest<FunctionDefinition[]>();
 const { request:req, response:res } = useRequest<Assistant | Assistant[]>()
-const { state } = useStore()
 const props = defineProps<{
     user: User;
 }>();   
@@ -102,10 +100,16 @@ const createAssistant = async () => {
         },
     });
     if (res.value) {
-        assistants.value.push(res.value);
+        assistants.value.push(res.value as Assistant);
     }
     await getAssistants();
 };
+const deleteAssistant = async (assistant: Assistant) => {
+    await req(`/api/assistant/${props.user.sub}?id=${assistant.id}`, {
+        method: "DELETE",
+    });
+    await getAssistants();
+}
 
 </script>
 <template>
@@ -148,6 +152,9 @@ const createAssistant = async () => {
 			<div v-if="assistants.length > 0" class="col center gap-4">
 				<p v-for="assistant in assistants">
 					{{ assistant.name  }}
+
+                    <img :src="assistant.avatar" class="x4 rf sh cp scale z-50 animate-fade-in" />
+                    <Icon icon="mdi-delete" class="icon-btn cp scale text-#cf0 bg-black sh rf p-1 opacity-70 x2" @click="deleteAssistant(assistant)" />
 				</p>
 				</div>
 				<div v-else>
