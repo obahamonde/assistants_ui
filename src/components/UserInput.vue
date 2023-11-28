@@ -4,24 +4,22 @@ const props = defineProps<{
   user: User;
 }>();
 const { state } = useStore();
-const { assistant, thread } = state;
 </script>
 <template>
-  <section class="col items-center h-screen w-full">
-    <FilesInput v-if="props.user" :user="props.user">
+  <section class="col items-center h-screen w-full animate-fade-in-down">
+    <FilesInput v-if="props.user && state.thread" :user="props.user">
       <MessageInput />
     </FilesInput>
-    <article class="content-wrapper" v-if="thread && assistant">
-      <slot :thread="thread" :assistant="assistant" />
+    <article class="content-wrapper" v-if="state.thread && state.assistant">
+      <slot :thread="state.thread" :assistant="state.assistant" />
     </article>
-    <article class="content-wrapper" v-if="!thread && assistant">
-      Choose a thread to get started
-    </article>
-    <article class="content-wrapper" v-if="!thread && !assistant">
-      Choose a thread and assistant to get started
-    </article>
-    <article class="content-wrapper" v-if="thread && !assistant">
-      Choose an assistant to get started
+    <article class="content-wrapper" v-else>
+      <div>
+        {{ state.thread ? "" : "Create a thread to start a Chat" }}
+      </div>
+      <div>
+        {{ state.assistant ? "" : "Pick an assistant to get Started" }}
+      </div>
     </article>
   </section>
 </template>

@@ -2,6 +2,7 @@
 type Assistant = {
   user?: string;
   id: string;
+  avatar: string;
   created_at: number;
   description?: string;
   file_ids: string[];

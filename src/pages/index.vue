@@ -10,7 +10,7 @@ const { state } = useStore();
   >
     <Threads :user="state.user" />
     <UserInput :user="state.user" />
-    <Assistants />
+    <Assistants :user="state.user" />
   </div>
 </template>
 
