@@ -20,6 +20,7 @@ export type Message = {
   thread_id: string;
   text: string;
   file_ids: string[];
+  assistant_id?: string;
 };
 
 export type Uploads = {

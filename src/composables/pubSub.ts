@@ -30,7 +30,7 @@ export const usePubSub = <T>(url: string) => {
 
   const pub = async (prompt: string) => {
     try {
-      await useFetch(`${rxUrl.value}?prompt=${encodeURIComponent(prompt)}`, {
+      await useFetch(`${rxUrl.value}`, {
         method: "POST",
       }).text();
     } catch (e: any) {

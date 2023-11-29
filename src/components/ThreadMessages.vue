@@ -13,7 +13,7 @@ watch(data, (newVal, oldVal) => {
 });
 </script>
 <template>
-<div>{{ state.messages }}</div>
+<pre>{{ state.messages }}</pre>
 </template>
 <style scoped>
 

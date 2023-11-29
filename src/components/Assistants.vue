@@ -102,7 +102,7 @@ const deleteAssistant = async (assistant: Assistant) => {
         <Modal v-if="showModal" @close="showModal = false" class="max-w-128 min-w-72 mx-auto"  >
             <template #body>
                 <section class="col center">
-                <p class="text-xs text-white rounded-lg col gap-4 center p-2 m-2" :style="{  backgroundImage: `url(/${selectedFunc!.name.toLowerCase()}.png)`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }">
+                <p class="text-xs text-white rounded-lg col gap-2 center p-2 m-2" :style="{  backgroundImage: `url(/${selectedFunc!.name.toLowerCase()}.png)`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }">
 									<i class="text-#cf0 bg-black sh rounded-lg px-4 py-2 opacity-70">{{ selectedFunc!.name }}</i>
                     <p class=" backdrop-blur-md p-1">{{ selectedFunc?.description }}</p>
                     <Icon icon="mdi-code-braces" title="Show Schema" class="icon-btn cp scale text-#cf0 bg-black sh rf p-1 opacity-70 x2" @click="toggleSchema" />
@@ -115,13 +115,14 @@ const deleteAssistant = async (assistant: Assistant) => {
             </template>
         </Modal>
           </div>
-          <div class="w-36 p-2 br col items-center max-h-50vh h-full overflow-y-auto overflow-x-hidden fixed bg-gradient-to-br from-secondary to-secondary via-info  animate-gradient text-accent sh">
-			<div v-if="assistants.length > 0" class="col center">
-				<p class="text-caption text-gray-500">Your Assistants</p>
+          <div class="w-36 p-2 br col items-center max-h-50vh h-full auto  overflow-x-hidden fixed bg-gradient-to-br from-secondary to-secondary via-info  animate-gradient text-accent sh">
+			<p class="text-caption text-gray-500">Your Assistants</p>
+            <div v-if="assistants.length > 0" class="col center h-5/7 overflow-y-auto h-full">
+				
                 <p v-for="assistant in assistants" class="col center" :class="state.assistant && state.assistant.id === assistant.id ? 'bg-primary text-white w-full rounded-xl sh' : ''">
-				   <p class="text-center">	{{ assistant.name  }} </p>
+				   <p class="text-center  text-xs">	{{ assistant.name  }} </p>
 
-                    <img :src="assistant.avatar" class="x4 rf sh cp scale z-50 animate-fade-in" 
+                    <img :src="assistant.avatar" class="x4 rf sh cp scale animate-fade-in" 
                     @click="state.assistant = assistant"
                     />
                     <Icon icon="mdi-delete" class="icon-btn mt-2 opacity-50 text-warning hover:text-error hover:opacity-100 cp scale" @click="deleteAssistant(assistant)" />				</p>
