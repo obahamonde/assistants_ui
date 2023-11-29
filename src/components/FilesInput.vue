@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { User, FileObject, Assistant } from "~/types";
+import type { User, FileObject } from "~/types";
 const props = defineProps<{
   user: User;
-  assistant?: Assistant;
 }>();
+const { state } = useStore();
 const { response, request } = useRequest<FileObject[]>();
 const files = ref<FileObject[]>([]);
 const show = ref(false);
@@ -64,7 +64,7 @@ const deleteFile = async (file: FileObject) => {
   }
 };
 onMounted(async () => {
-  if (!props.assistant) return;
+  if (!state.assistant) return;
   await getFiles();
 });
 </script>
@@ -79,13 +79,13 @@ onMounted(async () => {
         <slot></slot>
         <button
           class="btn-icon col center"
-          v-if="files.length > 0 && props.assistant"
+          v-if="files.length > 0 && state.assistant"
           @click="show = !show"
 
         >
           <Icon class="x2" title="Show Uploaded Files" icon="mdi-upload" />
         </button>
-        <button class="btn-icon col center" @click="inputFiles" v-if="props.assistant">
+        <button class="btn-icon col center" @click="inputFiles" v-if="state.assistant">
           <Icon class="x2" icon="mdi-paperclip" title="Attach Files" />
         </button>
       </div>

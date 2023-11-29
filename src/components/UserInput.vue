@@ -4,14 +4,14 @@ const props = defineProps<{
   user: User;
 }>();
 const { state } = useStore();
-</script>
+</script> 
 <template>
   <section class="col items-center h-screen w-full animate-fade-in-down">
     <FilesInput v-if="props.user && state.thread" :user="props.user">
       <MessageInput />
     </FilesInput>
-    <article class="content-wrapper" v-if="state.thread">
-      <slot :thread="state.thread" :assistant="state.assistant" />
+    <article class="content-wrapper" v-if="state.thread && state.assistant">
+     <ThreadMessages :thread="state.thread" :assistant="state.assistant" />
     </article>
     <article class="content-wrapper" v-else>
       <div>
@@ -21,7 +21,7 @@ const { state } = useStore();
         {{ state.assistant ? "" : "Pick an assistant to get Started" }}
       </div>
     </article>
-  </section>
+</section>
 </template>
 <style scoped>
 .content-wrapper {

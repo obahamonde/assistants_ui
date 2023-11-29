@@ -30,6 +30,7 @@ declare module 'vue' {
     ServerEvent: typeof import('./components/ServerEvent.vue')['default']
     SideBar: (typeof import("./components/SideBar.vue"))["default"]
     TextBlock: typeof import('./components/TextBlock.vue')['default']
+    ThreadMessages: typeof import('./components/ThreadMessages.vue')['default']
     Threads: typeof import('./components/Threads.vue')['default']
     TipTap: (typeof import("./components/TipTap.vue"))["default"]
     Toolbar: (typeof import("./components/Toolbar.vue"))["default"]
