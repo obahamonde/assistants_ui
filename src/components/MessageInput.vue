@@ -33,4 +33,3 @@ const text = ref("");
     @keydown.enter.prevent="addMessage(body)"
   />
 </template>
-<style scoped></style>

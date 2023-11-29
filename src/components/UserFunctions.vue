@@ -18,7 +18,6 @@ const { data, err, done, pub, status } = src;
 </script>
 <template>
   <div>
-    <div>{{ computedUrl }}</div>
     <slot :data="data" :err="err" :done="done" :pub="pub" :status="status" />
   </div>
 </template>

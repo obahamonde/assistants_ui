@@ -4,8 +4,11 @@ const { request, response } = useRequest<FunctionDefinition[]>();
 const { request:req, response:res } = useRequest<Assistant | Assistant[]>()
 const props = defineProps<{
     user: User;
-}>();   
-const funcs = ref<FunctionDefinition[]>([]);
+}>();
+const { dropzone,
+		onDragStart,
+		isOverDropzone,
+		el } = useDrag<FunctionDefinition>()
 const showModal = ref<boolean>(false);
 const showSchema = ref<boolean>(false);
 const selectedFunc = ref<FunctionDefinition | null>(null);
@@ -29,10 +32,10 @@ const body = computed(() => {
 const labelMoveName = ref(false);
 const labelMoveDescription = ref(false);
 const labelMoveInstructions = ref(false);
-const isOverDropzone = ref(false);
-const defs = ref<FunctionDefinition[]>([])
+
+
 const tools = computed(() => {
-    return defs.value.map((def) => {
+    return dropzone.value.map((def) => {
         return {
             function: def,
             type: "function",
@@ -45,15 +48,12 @@ const getAssistants = async()=>{
     assistants.value = res.value as Assistant[];
 }
 
-onMounted(async () => {
-    await getAssistants();
-});
-
 const getFunctions = async () => {
     await request("/api/functions", {});
-    funcs.value = response.value;
+    dropzone.value = response.value;
 };
 onMounted(async () => {
+    await getAssistants();
     await getFunctions();
 });
 const openModal = (func: FunctionDefinition) => {
@@ -63,30 +63,6 @@ const openModal = (func: FunctionDefinition) => {
 };
 const toggleSchema = () => {
     showSchema.value = !showSchema.value;
-};
-const handleDragStart = (e: DragEvent, func: FunctionDefinition) => {
-    e.dataTransfer?.setData("application/json", JSON.stringify(func));
-  };
-const handleDragOver = (e: DragEvent) => {
-    e.preventDefault();
-    isOverDropzone.value = true;
-}
-const handleDragLeave = (e: DragEvent) => {
-    e.preventDefault();
-    isOverDropzone.value = false;
-}
-const onDrop = (e: DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    isOverDropzone.value = false;
-""
-    const data = e.dataTransfer?.getData("application/json");
-    if (data) {
-        const func = JSON.parse(data);
-        if (!defs.value.find((d) => d.name === func.name)) {
-            defs.value.push(func);
-        }
-    }
 };
 const createAssistant = async () => {
     if (!assistantName.value || !description.value || !instructions.value) {
@@ -110,12 +86,12 @@ const deleteAssistant = async (assistant: Assistant) => {
     });
     await getAssistants();
 }
-
 </script>
 <template>
     <div class="w-36 p-2 tr col items-center max-h-50vh h-full overflow-y-auto overflow-x-hidden fixed bg-gradient-to-bl from-secondary to-secondary via-info animate-gradient text-accent sh">
+            <Icon icon="mdi-refresh" class="mr-4 icon-btn tr fixed cp scale text-#cf0 bg-black sh rf m-2 opacity-70 x1" @click="getFunctions()" />
         <ul class="col center list-none">
-            <li :draggable="true" @dragstart="handleDragStart($event, func)" @click="openModal(func)" class="col center mr-8 backdrop-blur-lg  p-2 m-2 rounded sh w-32" v-for="func in funcs" :key="func.name">
+            <li :draggable="true" @dragstart="onDragStart($event, func)" @click="openModal(func)" class="col center mr-8 backdrop-blur-lg  p-2 m-2 rounded sh w-32" v-for="func in dropzone" :key="func.name">
                 <p>{{ func.name }}</p>
 								<img :src="`/${func.name.toLowerCase()}.png`" class="x4 rf sh cp scale z-50 animate-fade-in" />
             </li>
@@ -154,10 +130,11 @@ const deleteAssistant = async (assistant: Assistant) => {
 					{{ assistant.name  }}
 
                     <img :src="assistant.avatar" class="x4 rf sh cp scale z-50 animate-fade-in" />
-                    <Icon icon="mdi-delete" class="icon-btn cp scale text-#cf0 bg-black sh rf p-1 opacity-70 x2" @click="deleteAssistant(assistant)" />
+                    <Icon icon="mdi-delete" class="icon-btn opacity-50 text-warning hover:text-error hover:opacity-100 cp scale" @click="deleteAssistant(assistant)" />
+                    <div>{{ assistant.tools }}</div>
 				</p>
 				</div>
-				<div v-else>
+				<div>
 					<GradientButton text="New Assistant" @click="showForm=!showForm" class="bottom-4 right-4 absolute"/>
 					<Modal v-if="showForm" @close="showForm = false" class="max-w-168 min-w-72 mx-auto"  >
 						<template #body>
@@ -194,13 +171,15 @@ const deleteAssistant = async (assistant: Assistant) => {
             @focus="labelMoveInstructions = true"
             @blur="labelMoveInstructions = false" />
     </div>
-   <div dropzone :class="isOverDropzone ? 'dropzone-over':'dropzone'" @drop="onDrop($event)"
-   @dragover="handleDragOver($event)" @dragleave="handleDragLeave($event)">
+   <div dropzone :class="isOverDropzone ? 'dropzone-over':'dropzone'" ref="el">
+
     <div v-if="tools.length > 0" class="row gap-4 center text-xs text-white">
-      <p v-for="tool in tools" class="row center relative bg-center bg-cover bg-no-repeat mask-dark rf  p-1 x4" :style="{  backgroundImage: `url(/${tool.function.name.toLowerCase()}.png)`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }"  @click="defs = defs.filter((d) => d.name !== tool.function.name)">  
+      <p v-for="tool in tools" class="row center relative bg-center bg-cover bg-no-repeat mask-dark rf  p-1 x4" :style="{  backgroundImage: `url(/${tool.function.name.toLowerCase()}.png)`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }"  @click=" dropzone = dropzone.filter((d) => d.name !== tool.function.name)">  
        <span class="text-white brightness-300 z-50 p-2"> {{ tool.function.name  }}</span>
+    
       </p>
-      </div>
+
+    </div>
       <div v-else>
         <p class="text-center">Drag and Drop Tools Here</p>
       </div>
