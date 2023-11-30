@@ -1,6 +1,3 @@
-import { ref, computed, watch } from "vue";
-import { useEventSource, useFetch } from "@vueuse/core";
-
 export const usePubSub = <T>(url: string) => {
   const { eventSource: sse, data, status, error, close } = useEventSource(url);
   const parsedData = computed(() => {
@@ -16,6 +13,14 @@ export const usePubSub = <T>(url: string) => {
   });
   const rxUrl = ref(url);
   const done = ref(false);
+
+
+  sse.value ? sse.value.addEventListener("done", (e: Event) => {
+    done.value = true;
+    close();
+  }
+  ) : null;
+
 
   watch(rxUrl, (newUrl, oldUrl) => {
     if (oldUrl && sse.value) {
@@ -59,4 +64,5 @@ export const usePubSub = <T>(url: string) => {
     eventSource: sse,
     status,
   };
-};
+}
+

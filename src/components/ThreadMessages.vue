@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { ThreadMessage, Thread, Assistant } from '~/types';
+import { ThreadMessage, Thread, Run, Assistant } from '~/types';
 const props = defineProps<{
 	thread: Thread;
-	assistant: Assistant;
+	run: Run;
+	assistant: Assistant
 }>();
 const { state } = useStore();
-const { data, err, close, done, pub, sub, status, eventSource } = usePubSub<ThreadMessage>(`/api/events/${props.thread.id}?assistant_id=${props.assistant.id}`);
+const { data } = usePubSub<ThreadMessage>(`/api/events/${props.thread.id}?run_id=${props.run.id}`);
 watch(data, (newVal, oldVal) => {
 	if (newVal !== oldVal && newVal) {
 		state.messages.push(newVal as ThreadMessage);
@@ -13,7 +14,20 @@ watch(data, (newVal, oldVal) => {
 });
 </script>
 <template>
-<pre>{{ state.messages }}</pre>
+<div v-for="message in state.messages">
+	<div class="col center" v-for="content in message.content">
+	<ChatMessage v-if="message.role=='assistant'"
+		:image="props.assistant.avatar"
+		:content="content.text.value"
+		:reverse="true"
+	/>
+	<ChatMessage v-else
+		:image="state.user!.picture!"
+		:content="content.text.value"
+		:reverse="false"
+	/>
+	</div>
+</div>
 </template>
 <style scoped>
 

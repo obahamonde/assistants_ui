@@ -35,3 +35,56 @@ body {
   background: linear-gradient(to bottom, navy, cyan);
 }
 
+.message-wrapper {
+  display: flex;
+  align-items: flex-start;
+  padding-bottom: 10px;
+  padding-right: 5px;
+  padding-left: 5px;
+
+  &.reverse {
+    justify-content: flex-end;
+
+    .message-box {
+      background-color: var(--message-box-2);
+      color: #fff;
+
+      &-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+      }
+    }
+
+    .message-pp {
+      order: 2;
+    }
+  }
+}
+
+.message-pp {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.message-box {
+  box-shadow: var(--box-shadow);
+  border-radius: 4px;
+  font-size: 12px;
+  line-height: 16px;
+  width: auto;
+  max-width: 80%;
+
+  &-wrapper {
+    margin: 0 12px;
+
+    span {
+      font-size: 10px;
+      line-height: 16px;
+      opacity: 0.6;
+    }
+  }
+}

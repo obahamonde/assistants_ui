@@ -11,7 +11,9 @@ const { state } = useStore();
       <MessageInput />
     </FilesInput>
     <article class="content-wrapper" v-if="state.thread && state.assistant">
-     <ThreadMessages :thread="state.thread" :assistant="state.assistant" />
+     <ThreadMessages
+      v-if="state.thread && state.assistant && state.run"
+      :thread="state.thread" :assistant="state.assistant" :run="state.run" />
     </article>
     <article class="content-wrapper" v-else>
       <div>

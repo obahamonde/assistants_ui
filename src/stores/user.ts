@@ -4,6 +4,7 @@ import type {
   ThreadMessage,
   Notification,
   User,
+  Run,
   Assistant,
   FileObject,
 } from "~/types";
@@ -16,6 +17,7 @@ export const useStore = defineStore("state", () => {
     thread: null as Thread | null,
     assistant: null as Assistant | null,
     files: [] as FileObject[],
+    run: null as Run | null,
   });
 
   const setState = (newState: any) => {

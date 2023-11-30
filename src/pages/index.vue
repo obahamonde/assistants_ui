@@ -10,8 +10,12 @@ useFavicon("/favicon.png");
     class="row w-full h-screen overflow-auto min-w-100vw"
   >
     <Threads :user="user" />
-    <UserInput :user="user" />
+
+    
+    <UserInput  :user="user" />
+
     <Assistants :user="user" />
+
     </div>
     </template>
     <template #landing="{ login }">

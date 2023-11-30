@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { Message, ThreadMessage } from "~/types";
+import { Message, Run, ThreadMessage } from "~/types";
 const { request, response } = useRequest<ThreadMessage>();
+const { request:req, response:res } = useRequest<Run>()
 const { state } = useStore();
 const body = computed<Message>(() => {
   return {
@@ -24,38 +25,52 @@ const addMessage = async (body: Message) => {
     console.log(e);
   }
 };
-const runMessage = (body:Message)=>{
-  if (!body.thread_id) return;
-  if (!body.assistant_id) return;
-  const { data, err, close, status } = usePubSub<ThreadMessage>(`/api/events/${body.thread_id}?assistant_id=${body.assistant_id}`);
-  watch(data, (newVal, oldVal) => {
-    if (newVal !== oldVal && newVal) {
-      state.messages.push(newVal as ThreadMessage);
-    }
-  });
-  watch(err, (newVal, oldVal) => {
-    if (newVal !== oldVal && newVal) {
-      console.log(newVal);
-    }
-  });
-  watch(status, (newVal, oldVal) => {
-    if (newVal === "CLOSED") {
-      return;
-    }
-  onUnmounted(() => {
-    close();
-  });
-  });
-}
+
 const text = ref("");
 const handleMessage = async (body: Message) => {
   if (!body.text) return;
-  body.thread_id && body.assistant_id ? runMessage(body) : await addMessage(body);
+  if (!body.thread_id) return;
+  if (!body.assistant_id) return;
+  await addMessage(body);
+  await handleRunner();
   text.value = "";
 };
-
-
-
+const handleRunner = async ()=>{
+  const { run, thread, assistant } = state;
+  console.log(run)
+  if (!thread) return;
+  if (!run && !assistant) return;
+  if (!run && assistant) {
+    const url = `/api/run/${thread.id}?assistant_id=${assistant.id}`;
+    await req(url, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    state.run = res.value
+  }
+  else if (run && assistant) {
+    if (!run) return;
+    if (run.status in ["cancelling", "cancelled", "failed", "completed","expired"]) {
+       const url = `/api/run/${thread.id}?assistant_id=${assistant.id}`;
+    await req(url, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    state.run = res.value
+  }
+  else {
+    }
+    const url = `/api/run/${thread.id}?run_id=${run.id}`;
+    await req(url, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    state.run = res.value
+  }
+}
 </script>
 <template>
   <textarea
@@ -64,4 +79,5 @@ const handleMessage = async (body: Message) => {
     placeholder="Type a message"
     @keydown.enter.prevent="handleMessage(body)"
   />
+ 
 </template>
