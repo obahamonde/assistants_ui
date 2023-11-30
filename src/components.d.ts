@@ -20,6 +20,7 @@ declare module 'vue' {
     Input: (typeof import("./components/Input.vue"))["default"]
     Landing: (typeof import("./components/Landing.vue"))["default"]
     MessageInput: typeof import('./components/MessageInput.vue')['default']
+    Microphone: typeof import('./components/Microphone.vue')['default']
     Modal: typeof import('./components/Modal.vue')['default']
     MyPosts: (typeof import("./components/MyPosts.vue"))["default"]
     Navbar: (typeof import("./components/Navbar.vue"))["default"]

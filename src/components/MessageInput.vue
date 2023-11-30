@@ -3,6 +3,18 @@ import { Message, Run, ThreadMessage } from "~/types";
 const { request, response } = useRequest<ThreadMessage>();
 const { request:req, response:res } = useRequest<Run>()
 const { state } = useStore();
+const { run, thread, assistant } = toRefs(state);
+const text = ref("");
+const runnerUrl = computed(() => {
+  if (!thread.value) return null;
+  let url = `/api/run/${thread.value.id}`;
+  if (run.value && assistant.value) {
+    url += `?run_id=${run.value.id}`;
+  } else if (!run.value && assistant.value) {
+    url += `?assistant_id=${assistant.value.id}`;
+  }
+  return url;
+});
 const body = computed<Message>(() => {
   return {
     text: text.value,
@@ -11,6 +23,9 @@ const body = computed<Message>(() => {
     assistant_id: state.assistant ? state.assistant.id : "",
   };
 });
+watchEffect(async()=>{
+  (!run.value || run.value.status in ["cancelling", "cancelled", "failed","completed","expired"]) ? await handleRunner() : null;
+})
 const addMessage = async (body: Message) => {
   try {
     await request(`/api/threadmessage`, {
@@ -26,7 +41,6 @@ const addMessage = async (body: Message) => {
   }
 };
 
-const text = ref("");
 const handleMessage = async (body: Message) => {
   if (!body.text) return;
   if (!body.thread_id) return;
@@ -36,41 +50,17 @@ const handleMessage = async (body: Message) => {
   text.value = "";
 };
 const handleRunner = async ()=>{
-  const { run, thread, assistant } = state;
-  console.log(run)
-  if (!thread) return;
-  if (!run && !assistant) return;
-  if (!run && assistant) {
-    const url = `/api/run/${thread.id}?assistant_id=${assistant.id}`;
-    await req(url, {
+  const url = runnerUrl.value;
+  if (!url) return;
+  await req(url, {
       headers: {
         "Content-Type": "application/json",
       },
     });
-    state.run = res.value
+    state.run = res.value as Run;
   }
-  else if (run && assistant) {
-    if (!run) return;
-    if (run.status in ["cancelling", "cancelled", "failed", "completed","expired"]) {
-       const url = `/api/run/${thread.id}?assistant_id=${assistant.id}`;
-    await req(url, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    state.run = res.value
-  }
-  else {
-    }
-    const url = `/api/run/${thread.id}?run_id=${run.id}`;
-    await req(url, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    state.run = res.value
-  }
-}
+
+
 </script>
 <template>
   <textarea
