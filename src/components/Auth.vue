@@ -44,7 +44,7 @@ watch(isAuthenticated, async (isAuthenticated) => {
   </div>
   <div v-else>
     <div class="container">
-     <slot name="landing" :login="loginWithRedirect" />
+      <slot name="landing" :login="loginWithRedirect" />
     </div>
   </div>
 </template>

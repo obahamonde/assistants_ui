@@ -37,5 +37,6 @@ declare module 'vue' {
     Toolbar: (typeof import("./components/Toolbar.vue"))["default"]
     UserFunctions: typeof import('./components/UserFunctions.vue')['default']
     UserInput: typeof import('./components/UserInput.vue')['default']
+    VButton: typeof import('./components/VButton.vue')['default']
   }
 }

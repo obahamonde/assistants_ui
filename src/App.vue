@@ -3,7 +3,7 @@ useTitle("Home");
 useFavicon("/favicon.png");
 </script>
 <template>
-    <RouterView/>
+  <RouterView />
 </template>
 <style>
 #app,

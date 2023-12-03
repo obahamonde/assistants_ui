@@ -1,20 +1,9 @@
 <script setup lang="ts">
-import { Message, Run, ThreadMessage } from "~/types";
+import { Message, ThreadMessage, Run } from "~/types";
 const { request, response } = useRequest<ThreadMessage>();
-const { request:req, response:res } = useRequest<Run>()
+const { request: req, response: res } = useRequest<Run>();
 const { state } = useStore();
-const { run, thread, assistant } = toRefs(state);
 const text = ref("");
-const runnerUrl = computed(() => {
-  if (!thread.value) return null;
-  let url = `/api/run/${thread.value.id}`;
-  if (run.value && assistant.value) {
-    url += `?run_id=${run.value.id}`;
-  } else if (!run.value && assistant.value) {
-    url += `?assistant_id=${assistant.value.id}`;
-  }
-  return url;
-});
 const body = computed<Message>(() => {
   return {
     text: text.value,
@@ -23,11 +12,13 @@ const body = computed<Message>(() => {
     assistant_id: state.assistant ? state.assistant.id : "",
   };
 });
-watchEffect(async()=>{
-  (!run.value || run.value.status in ["cancelling", "cancelled", "failed","completed","expired"]) ? await handleRunner() : null;
-})
-const addMessage = async (body: Message) => {
+
+const submitAndRun = async (body: Message) => {
+  if (!body.thread_id) return;
+  if (!body.assistant_id) return;
+  if (!body.text) return;
   try {
+  
     await request(`/api/threadmessage`, {
       method: "POST",
       body: JSON.stringify(body),
@@ -36,30 +27,36 @@ const addMessage = async (body: Message) => {
       },
     });
     state.messages.push(response.value as ThreadMessage);
+    await req(`/api/run/${body.thread_id}?assistant_id=${body.assistant_id}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+    text.value = "";
+    state.run = res.value
+    useServerSentEvents(res.value.id);
   } catch (e) {
     console.log(e);
   }
 };
 
-const handleMessage = async (body: Message) => {
-  if (!body.text) return;
-  if (!body.thread_id) return;
-  if (!body.assistant_id) return;
-  await addMessage(body);
-  await handleRunner();
-  text.value = "";
+const useServerSentEvents = (id: string) => {
+  if (!state.thread) return;
+  if (!state.run || state.run.id !== id) return;
+  const source = new EventSource(`/api/events/${state.thread.id}?run_id=${id}`);
+  source.onmessage = (e) => {
+    const data = JSON.parse(e.data);
+    console.log(data);
+      state.messages.push(data)
+  };
+  source.addEventListener("done", (e) => {
+    source.close()
+    return
+  })
+  source.onerror = (e) => {
+    console.log(e);
+  };
 };
-const handleRunner = async ()=>{
-  const url = runnerUrl.value;
-  if (!url) return;
-  await req(url, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    state.run = res.value as Run;
-  }
-
 
 </script>
 <template>
@@ -67,7 +64,7 @@ const handleRunner = async ()=>{
     v-model="text"
     class="w-full px-4 py-2 rounded-lg mx-2"
     placeholder="Type a message"
-    @keydown.enter.prevent="handleMessage(body)"
+    @keydown.enter.prevent="submitAndRun(body)"
   />
- 
+
 </template>

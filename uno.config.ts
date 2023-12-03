@@ -49,7 +49,6 @@ export default defineConfig({
     ["spin-in-left", "animate-spin-in-left animate-duration-200"],
     ["spin-in-right", "animate-spin-in-right animate-duration-200"],
     ["no-outline", "outline-none focus:outline-none hover:outline-none"],
-    ["toast", " tr mt-16 row rounded-lg  shadow-primary sh-lg z-50 fixed p-4"],
     [
       "btn-get",
       "dark:invert m-2 bg-primary text-light rounded-lg shadow-success hover:bg-success hover:text-accent hover:shadow-primary shadow-md px-4 py-2 cp hover:scale-110 hover:transition-all duration-200 ease-in-out hover:cursor-pointer hover:font-extrabold hover:underline",
@@ -68,13 +67,16 @@ export default defineConfig({
     ],
     [
       "text-caption",
-      "font-mono text-secondary dark:text-light text-sm text-center",
+      "font-mono text-success dark:text-light text-sm text-center",
     ],
-    ["text-title", "font-script text-info dark:text-light text-xl text-center"],
-    ["text-body", "font-serif text-accent dark:text-light text-lg"],
+    [
+      "text-title",
+      "font-script text-accent dark:text-secondary text-xl text-center",
+    ],
+    ["text-body", "font-serif text-black dark:text-light text-lg"],
     [
       "text-subtitle",
-      "font-sans text-accent dark:text-success text-lg text-center",
+      "font-sans text-primary dark:text-success text-lg text-center",
     ],
     [
       "input",

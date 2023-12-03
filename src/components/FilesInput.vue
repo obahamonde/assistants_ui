@@ -81,11 +81,14 @@ onMounted(async () => {
           class="btn-icon col center"
           v-if="files.length > 0 && state.assistant"
           @click="show = !show"
-
         >
           <Icon class="x2" title="Show Uploaded Files" icon="mdi-upload" />
         </button>
-        <button class="btn-icon col center" @click="inputFiles" v-if="state.assistant">
+        <button
+          class="btn-icon col center"
+          @click="inputFiles"
+          v-if="state.assistant"
+        >
           <Icon class="x2" icon="mdi-paperclip" title="Attach Files" />
         </button>
       </div>

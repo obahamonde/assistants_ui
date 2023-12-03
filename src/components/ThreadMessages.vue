@@ -1,44 +1,39 @@
 <script setup lang="ts">
-import { ThreadMessage, Thread, Run, Assistant } from '~/types';
-const { request, response } = useRequest<ThreadMessage[]>();
-
-const props = defineProps<{
-	thread: Thread;
-	run: Run;
-	assistant: Assistant
-}>();
-
 const { state } = useStore();
 
-const { data } = usePubSub<ThreadMessage>(`/api/events/${props.thread.id}?run_id=${props.run.id}`);
-
-const getThreadMessages = async () => {
-	await request(`/api/threadmessage/${props.thread.id}`, {
-		method: 'GET',
-	});
-	state.messages = response.value as ThreadMessage[];
-};
-
-watch(data, (newVal, oldVal) => {
-	if (newVal !== oldVal && newVal) {
-		state.messages.push(newVal as ThreadMessage);
-	}
-});
-onMounted(async () => {
-	await getThreadMessages();
-	state.messages = response.value as ThreadMessage[];
-});
 </script>
 <template>
-<div class="text-2xl">{{ props.run.status }}</div>
-<div class="text-2xl">{{ props.run.id }}</div>
-<div v-for="message in state.messages" v-if="state.user">
-	<div class="col center" v-for="content in message.content">
-	<ChatMessage v-if="message.role=='assistant'"
-		:image="message.role=='assistant' ? props.assistant.avatar : state.user.picture!" 
-		:content="content.text.value"
-		:reverse="message.role=='assistant'"
-	/>
-	</div>
-</div>
+  
+  <section class="col items-center h-screen w-full animate-fade-in">
+    <article class="content-wrapper" v-if="state.thread && state.assistant && state.user">
+      <div v-for="message in state.messages">
+      <div v-for="content in message.content">
+        <ChatMessage
+        v-if="content.type == 'text'"
+          :image="message.role === 'assistant' ? state.assistant.avatar : state.user.picture!"
+          :content="content.text.value"
+          :reverse="message.role === 'assistant' ? true : false"
+        />
+        </div>
+      </div>
+    </article>
+      <div class="text-title">
+        {{ state.thread ? "" : "Create a thread to start a Chat" }}
+      </div>
+      <div class="text-title">
+        {{ state.assistant ? "" : "Pick an assistant to get Started" }}
+      </div>
+  
+  </section>
 </template>
+
+<style scoped lang="scss">
+.content-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+</style>

@@ -50,32 +50,33 @@ onMounted(async () => {
     class="p-8 col items-center h-full backdrop-blur-md sh slide-left"
     v-if="drawer"
   >
-    <button
-      class="px-4 py-2 bg-primary text-info hover:bg-accent cp scale sh rounded-lg mb-4"
-      @click="addThread()"
+    <VButton text="Create Thread" @click="addThread" v-if="state.thread" />
+    <GradientButton text="New Thread" @click="addThread" v-else />
+    <div
+      v-for="thread in localState.threads"
+      :key="thread.id"
+      class="m-4 col center gap-4 bg-gray-300 sh p-2 rounded"
     >
-      Add Thread
-    </button>
-    <div v-for="thread in localState.threads" :key="thread.id" class="m-2">
-      <strong
-        @click="state.thread = thread"
-        class="hover:underline cp"
-        :class="
-          state.thread && state.thread.id === thread.id
-            ? 'text-accent'
-            : 'text-primary'
-        "
-        >{{ thread.title }}</strong
-      >
-      <p class="text-primary">
-        {{ new Date(thread.created_at * 1000).toLocaleString() }}
-      </p>
-      <Icon
-        icon="mdi-delete"
-        class="cp x1 opacity-50 hover:opacity-100 scale text-warning hover:text-error"
-        @click="delThread(thread)"
-      />
+      <div class="col center m-2">
+        <strong
+          @click="state.thread = thread"
+          class="hover:underline cp"
+          :class="
+            state.thread && state.thread.id === thread.id
+              ? 'text-accent'
+              : 'text-primary'
+          "
+          >{{ thread.title }}</strong
+        >
+        <p class="text-primary text-center">
+          {{ new Date(thread.created_at * 1000).toLocaleString() }}
+        </p>
+        <Icon
+          icon="mdi-delete"
+          class="cp x1 opacity-50 hover:opacity-100 scale text-warning hover:text-error"
+          @click="delThread(thread)"
+        />
+      </div>
     </div>
   </div>
 </template>
-<style scoped></style>

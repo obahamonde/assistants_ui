@@ -128,7 +128,8 @@ const deleteAssistant = async (assistant: Assistant) => {
                     <Icon icon="mdi-delete" class="icon-btn mt-2 opacity-50 text-warning hover:text-error hover:opacity-100 cp scale" @click="deleteAssistant(assistant)" />				</p>
 				</div>
 				<div>
-					<GradientButton text="New Assistant" @click="showForm=!showForm" class="bottom-4 right-4 absolute"/>
+					<GradientButton text="Create Assistant" @click="showForm=!showForm" class="bottom-4 right-4 absolute" v-if="!state.assistant"/>
+                    <VButton text="New Assistant" @click="showForm=!showForm" class="bottom-4 right-4 absolute" v-else/>
 					<Modal v-if="showForm" @close="showForm = false" class="max-w-168 min-w-72 mx-auto"  >
 						<template #body>
 							<p class="bg-gradient-to-bl from-gray-400 to-gray-400 via-gray-5000 text-accent sh rounded-lg col center p-8 m-2 animate-gradient">
