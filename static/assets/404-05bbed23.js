@@ -1,0 +1,1 @@
+import{d as s,u as a,r,o as c,c as u,a as l,b as o,e as _}from"./index-8200d2d5.js";const i={class:"col center h-screen"},f=s({__name:"404",setup(m){const t=a();return(p,e)=>{const n=r("RouterView");return c(),u("main",i,[l(n),o("div",null,[o("button",{class:"btn-del",onClick:e[0]||(e[0]=d=>_(t).back())},"Go back")])])}}});export{f as default};
