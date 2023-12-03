@@ -44,7 +44,7 @@ const copyToClipboard = () => {
     @click="copyToClipboard"
   />
   <div
-    class="markdown-body bg-gray-500 text-white rounded sh max-w-lg text-xs p-4"
+    class="markdown-body bg-gray-500 text-white rounded sh w-full text-xs p-4"
     v-html="md.render(props.content)"
   ></div>
 </template>

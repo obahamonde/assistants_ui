@@ -10,19 +10,17 @@ const { state } = useStore();
     <FilesInput v-if="props.user && state.thread" :user="props.user">
       <MessageInput />
     </FilesInput>
-    <article class="content-wrapper" v-if="state.thread && state.assistant">
+    <article class="content-wrapper" v-if="state.thread">
       <ThreadMessages
-        v-if="state.thread && state.assistant"
+        v-if="state.thread"
         :thread="state.thread"
+        :user="props.user"
         :assistant="state.assistant"
       />
     </article>
     <article class="content-wrapper" v-else>
       <div>
         {{ state.thread ? "" : "Create a thread to start a Chat" }}
-      </div>
-      <div>
-        {{ state.assistant ? "" : "Pick an assistant to get Started" }}
       </div>
     </article>
   </section>
