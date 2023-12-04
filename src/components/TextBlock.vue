@@ -5,9 +5,8 @@ const props = defineProps({
   content: {
     type: String,
     default: "",
-  },
+  }
 });
-const { notify } = useStore();
 const md = MarkdownIt({
   html: true,
   linkify: true,
@@ -16,43 +15,39 @@ const md = MarkdownIt({
     if (lang && hljs.getLanguage(lang)) {
       try {
         return (
-          '<pre class="hljs"><code>' +
-          hljs.highlight(lang, str, true).value +
-          "</code></pre>"
+          hljs.highlight(lang, str, true).value
         );
       } catch (__) {}
     }
     return (
-      '<pre class="hljs" ><code >' + md.utils.escapeHtml(str) + "</code></pre>"
+      '<pre ><code class="highlight">' + md.utils.escapeHtml(str) + "</code></pre>"
     );
   },
-});
-const copyToClipboard = () => {
-  const el = document.createElement("textarea");
-  el.value = props.content;
-  document.body.appendChild(el);
-  el.select();
-  document.execCommand("copy");
-  document.body.removeChild(el);
-  notify("Copied to clipboard", "success");
-};
+  });
+
 </script>
 <template>
-  <Icon
-    icon="mdi-clipboard-text-outline"
-    class="translate-y-5 text-white scale cp"
-    @click="copyToClipboard"
-  />
   <div
-    class="markdown-body bg-gray-500 text-white rounded sh w-full text-xs p-4"
-    v-html="md.render(props.content)"
+    class=" bg-gray-300 rounded sh max-w-lg text-xs p-2 markdown-body"
+    v-html="
+      md.render(props.content)
+    "
+
   ></div>
 </template>
+<style scoped lang="scss"> 
+@import url("https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/github.min.css");
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&display=swap&family=Open+Sans:wght@400;600;700&display=swap&family=DM+Mono:wght@400;500;600;700&display=swap&family=Roboto+Mono:wght@400;500;600;700&display=swap&Merriweather:wght@400;500;600;700&display=swap");
 
-<style scoped>
-pre {
-  line-height: 125%;
+.markdown-body {
+ 
+img {
+  max-width: 8rem!important;
 }
+}
+pre { line-height: 125%; }
+
 td.linenos .normal {
   color: #6e7681;
   background-color: #0d1117;
@@ -347,4 +342,5 @@ span.linenos.special {
 .highlight .il {
   color: #a5d6ff;
 } /* Literal.Number.Integer.Long */
+
 </style>

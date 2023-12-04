@@ -6,12 +6,10 @@ const props = defineProps<{
 }>();
 const { state } = useStore();
 const drawer = ref(true);
-const localState = reactive({
-  threads: [] as Thread[],
-});
+const threads = ref<Thread[]>([]);
 const getThreads = async () => {
   await request(`/api/thread/${props.user.sub}`, { method: "GET" });
-  localState.threads = response.value as Thread[];
+  threads.value = response.value as Thread[];
 };
 const addThread = async () => {
   try {
@@ -32,6 +30,9 @@ const delThread = async (thread: Thread) => {
       },
     );
     await getThreads();
+    if (state.thread?.id === thread.id) {
+      state.thread = null;
+    }
   } catch (e) {
     console.log(e);
   }
@@ -53,7 +54,7 @@ onMounted(async () => {
     <VButton text="Create Thread" @click="addThread" v-if="state.thread" />
     <GradientButton text="New Thread" @click="addThread" v-else />
     <div
-      v-for="thread in localState.threads"
+      v-for="thread in threads"
       :key="thread.id"
       class="m-4 col center gap-4 bg-gray-300 sh p-2 rounded"
     >

@@ -16,80 +16,96 @@ const body = computed<Message>(() => {
 const submitAndRun = async (body: Message) => {
   if (!body.thread_id) return;
   if (!body.text) return;
-  if (!body.assistant_id) useChatbot(); else {
-  
-  try {
-  
-    await request(`/api/threadmessage`, {
-      method: "POST",
-      body: JSON.stringify(body),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    state.messages.push(response.value as ThreadMessage);
-    await req(`/api/run/${body.thread_id}?assistant_id=${body.assistant_id}`, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-    text.value = "";
-    state.run = res.value
-    useRun(res.value.id);
-  } catch (e) {
-    console.log(e);
+  if (!body.assistant_id) useChatbot();
+  else {
+    try {
+      await request(`/api/threadmessage`, {
+        method: "POST",
+        body: JSON.stringify(body),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      state.messages.unshift(response.value as ThreadMessage);
+      await req(
+        `/api/run/${body.thread_id}?assistant_id=${body.assistant_id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      );
+      text.value = "";
+      state.run = res.value;
+      useRun(res.value.id);
+    } catch (e) {
+      console.log(e);
+    }
   }
-};
 };
 const useRun = (id: string) => {
   if (!state.thread) return;
   if (!state.run || state.run.id !== id) return;
- useEvent<ThreadMessage>(`/api/events/${state.thread.id}?run_id=${id}`,(data:ThreadMessage) => {
-    state.messages.push(data)
+  const source = new EventSource(
+    `/api/run/${state.thread.id}?run_id=${state.run.id}`,
+  );
+  source.onmessage = (e) => {
+    const data = JSON.parse(e.data) as ThreadMessage;
+    state.messages.unshift(data);
+  };
+  source.onerror = (e) => {
+    console.log(e);
+  };
+  source.addEventListener("done", (e) => {
+    source.close();
+    return;
   });
 };
 
 const useChatbot = async () => {
   if (!state.thread) return;
-  const source = new EventSource(`/api/chat/${state.thread.id}?text=${text.value}`);
-    state.messages.push({
-      content: [
-        {
-          type: "text",
-          text: {
-            value: text.value,
-          },
+  const source = new EventSource(
+    `/api/chat/${state.thread.id}?text=${text.value}`,
+  );
+  state.messages.unshift({
+    content: [
+      {
+        type: "text",
+        // @ts-ignore
+        text: {
+          value: text.value,
         },
-      ],
-      role: "user",
-    });
-    state.messages.push({
-      content: [
-        {
-          type: "text",
-          text: {
-            value: "",
-          },
+      },
+    ],
+    role: "user",
+  });
+  state.messages.unshift({
+    content: [
+      {
+        type: "text",
+        // @ts-ignore
+        text: {
+          value: "",
         },
-      ],
-      role: "assistant",
-    });
-
-
+      },
+    ],
+    role: "assistant",
+  });
   source.onmessage = (e) => {
-    const chunk = e.data
+    const chunk = e.data;
     console.log(chunk);
-    state.messages[state.messages.length - 1].content[0].text.value += chunk
+    // @ts-ignore
+    state.messages[0].content[0].text.value += chunk;
   };
   source.addEventListener("done", (e) => {
-    source.close()
-    return
-  })
+    source.close();
+    return;
+  });
   source.onerror = (e) => {
     console.log(e);
   };
 };
-
 </script>
 <template>
   <textarea
@@ -98,5 +114,4 @@ const useChatbot = async () => {
     placeholder="Type a message"
     @keydown.enter.prevent="submitAndRun(body)"
   />
-
 </template>

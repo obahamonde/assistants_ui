@@ -1,10 +1,17 @@
-User
 <script setup lang="ts">
-const { speech, isListening, result, fetchVoice } = useSpeech("es-MX");
+const { speech, isListening, result, fetchVoice } = useSpeech();
 const handleSpeech = async () => {
   if (isListening.value) {
     speech.stop();
-    await fetchVoice(result.value, "api/audio/");
+    const response = await fetch("/api/chat/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ text: result.value }),
+    });
+    const data = await response.text();
+    await fetchVoice(data, "api/audio/", "nova");
     result.value = "";
   } else {
     speech.start();

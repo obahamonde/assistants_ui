@@ -13,6 +13,7 @@
     "noUnusedLocals": true,
     "strictNullChecks": true,
     "allowJs": false,
+    "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "types": [
       "vite/client",

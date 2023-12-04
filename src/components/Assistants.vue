@@ -29,7 +29,7 @@ const body = computed(() => {
 })
 
 
-const labelMoveName = ref(false);
+const labelMoveName = ref(false);   
 const labelMoveDescription = ref(false);
 const labelMoveInstructions = ref(false);
 
@@ -84,7 +84,9 @@ const deleteAssistant = async (assistant: Assistant) => {
     await req(`/api/assistant/${props.user.sub}?id=${assistant.id}`, {
         method: "DELETE",
     });
-    await getAssistants();
+    if (state.assistant?.id === assistant.id) {
+        state.assistant = null;
+    }
 }
 </script>
 <template>
@@ -117,7 +119,7 @@ const deleteAssistant = async (assistant: Assistant) => {
           </div>
           <div class="w-36 p-2 br col items-center max-h-50vh h-full auto  overflow-x-hidden fixed bg-gradient-to-br from-secondary to-secondary via-info  animate-gradient text-accent sh">
 			<p class="text-caption text-gray-500">Your Assistants</p>
-            <div v-if="assistants.length > 0" class="col center h-5/7 overflow-y-auto h-full">
+            <div v-if="assistants && assistants.length > 0" class="col center h-5/7 overflow-y-auto h-full w-full">
 				
                 <p v-for="assistant in assistants" class="col center" :class="state.assistant && state.assistant.id === assistant.id ? 'bg-primary text-white w-full rounded-xl sh' : ''">
 				   <p class="text-center  text-xs">	{{ assistant.name  }} </p>

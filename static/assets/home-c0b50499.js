@@ -1,1 +1,0 @@
-import{_ as o,r as t,o as c,c as n,a as s}from"./index-8200d2d5.js";const r={},a={class:"flex min-h-screen flex-col items-center justify-between"};function _(i,m){const e=t("RouterView");return c(),n("main",a,[s(e)])}const l=o(r,[["render",_]]);export{l as default};

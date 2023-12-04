@@ -10,9 +10,12 @@ export const useSpeech = () => {
   speech.recognition!.grammars = speechRecognitionList;
   const { isListening, result } = speech;
 
-  const fetchVoice = async (text: string, endpoint: string) => {
-    const { data: response } = await useFetch(`${endpoint}${text}`, {
+  const fetchVoice = async (text: string, endpoint: string, voice: 'alloy' | 'nova' | 'echo' | 'onyx' | 'shimmer' | 'fable') => {
+    const { data: response } = await useFetch(`${endpoint}?text=${text}&voice=${voice}`, {
       method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
     }).blob();
     if (!response.value) return;
     const blobAudio = new Blob([response.value], { type: "audio/mp3" });

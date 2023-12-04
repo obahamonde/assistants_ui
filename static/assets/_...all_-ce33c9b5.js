@@ -1,1 +1,0 @@
-import{_ as e,o as n,c as t,q as o}from"./index-8200d2d5.js";const c={};function _(r,a){return n(),t("div",null,"404 Not Found")}typeof o=="function"&&o(c);const f=e(c,[["render",_]]);export{f as default};
