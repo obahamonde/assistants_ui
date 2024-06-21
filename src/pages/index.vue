@@ -1,31 +1,21 @@
 <script setup lang="ts">
+import { useAuth0 } from '@auth0/auth0-vue';
+const { isAuthenticated, loginWithRedirect } = useAuth0();
 useTitle("Home");
 useFavicon("/favicon.png");
 </script>
+
 <template>
-  <section class="col center h-screen">
+  <section class="col center overflow-auto">
     <Auth>
-      <template #default="{ user }">
-        <div class="row w-full h-screen overflow-auto min-w-100vw">
-          <Threads :user="user" />
-
-          <UserInput :user="user" />
-
-          <Assistants :user="user" />
-        </div>
+      <template #default="{ user }" v-if="isAuthenticated">
+        <AppView :user="user" />
       </template>
-      <template #landing="{ login }">
-        <img src="/chatbot.svg" class="w-64" />
-        <section class="text-2xl font-script font-bold mt-8 text-gray-700">
-          Intelligence Artificielle Assistant À la carte
+      <template #landing="{ login }" v-else>
+        <section class="h-full w-full min-h-100vh min-w-100vw">
+          <LandLanding :login="login" />
         </section>
-        <GradientButton @click="login" class="mt-8" text="Get Started" />
       </template>
     </Auth>
   </section>
 </template>
-
-<route lang="yaml">
-meta:
-  layout: home
-</route>

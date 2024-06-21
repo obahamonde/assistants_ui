@@ -7,6 +7,7 @@ import App from "./App.vue";
 import generatedRoutes from "~pages";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 import { createAuth0 } from "@auth0/auth0-vue";
+import Tres from "@tresjs/core";
 
 import "./styles/main.scss";
 import "uno.css";
@@ -31,4 +32,5 @@ createApp(App)
     }),
   )
   .use(router)
+  .use(Tres)
   .mount("#app");

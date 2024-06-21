@@ -9,11 +9,11 @@ useFavicon("/favicon.png");
 #app,
 body,
 html {
-  height: screen;
+  height: 100%;
   width: 100%;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  overflow: hidden;
+  min-height: 100vh;
 }
 </style>

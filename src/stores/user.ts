@@ -1,23 +1,12 @@
 import { defineStore, acceptHMRUpdate } from "pinia";
-import type {
-  Thread,
-  ThreadMessage,
-  Notification,
-  User,
-  Run,
-  Assistant,
-  FileObject,
-} from "~/types";
+import type { Notification, User, Chat, Message } from "~/types";
 
 export const useStore = defineStore("state", () => {
   const state = reactive({
     notifications: [] as Notification[],
     user: null as User | null,
-    messages: [] as ThreadMessage[],
-    thread: null as Thread | null,
-    assistant: null as Assistant | null,
-    files: [] as FileObject[],
-    run: null as Run | null,
+    chats: [] as Chat[],
+    current: { messages: [] as Message[], model: "llama3-8b-8192", instruction: "You are a helpful assistant" } as Chat,
   });
 
   const setState = (newState: any) => {

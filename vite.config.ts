@@ -6,11 +6,11 @@ import Layouts from "vite-plugin-vue-layouts"; // eslint-disable-line
 import Components from "unplugin-vue-components/vite";
 import AutoImport from "unplugin-auto-import/vite";
 import Markdown from "vite-plugin-vue-markdown";
-import VueDevTools from "vite-plugin-vue-devtools";
 import LinkAttributes from "markdown-it-link-attributes";
 import Unocss from "unocss/vite";
 import Shiki from "markdown-it-shiki";
 import VueMacros from "unplugin-vue-macros/vite";
+import { templateCompilerOptions } from "@tresjs/core";
 
 export default defineConfig({
   css: {
@@ -28,7 +28,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "https://www.aiofauna.com/api",
+        target: "https://chat.indiecloud.co/api",
         changeOrigin: true,
         rewrite: (path: string) => path.replace(/^\/api/, ""),
       },
@@ -47,6 +47,7 @@ export default defineConfig({
       plugins: {
         vue: Vue({
           include: [/\.vue$/, /\.md$/],
+          ...templateCompilerOptions,
         }),
       },
     }),
@@ -85,6 +86,5 @@ export default defineConfig({
         });
       },
     }),
-    VueDevTools(),
   ],
 });

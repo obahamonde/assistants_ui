@@ -1,4 +1,4 @@
-export const useDrag = <T extends { name?: string; id?: string }>() => {
+export const useDrag = <T extends { key?: string }>() => {
   const isOverDropzone = ref(false);
   const dropzone = ref<T[]>([]);
   const draggableData = ref<T>();
@@ -22,7 +22,7 @@ export const useDrag = <T extends { name?: string; id?: string }>() => {
     const data = e.dataTransfer?.getData("application/json");
     if (data) {
       const func = JSON.parse(data);
-      if (!dropzone.value.find((d) => d.name === func.name)) {
+      if (!dropzone.value.find((d) => d.key === func.key)) {
         dropzone.value.push(func);
       }
     }
@@ -46,8 +46,8 @@ export const useDrag = <T extends { name?: string; id?: string }>() => {
   });
 
   watch(draggableData, (newVal, oldVal) => {
-    if (newVal !== oldVal) {
-      console.log(newVal);
+    if (newVal !== oldVal && newVal && el.value) {
+      onDragStart(new DragEvent("dragstart"), newVal);
     }
   });
 

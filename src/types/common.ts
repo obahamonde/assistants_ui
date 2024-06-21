@@ -17,18 +17,13 @@ export type User = {
 };
 
 export type Message = {
-  thread_id: string;
-  text: string;
-  file_ids: string[];
-  assistant_id?: string;
+  content: string;
+  role: "user" | "assistant" | "system";
 };
 
-export type Uploads = {
-  user: string;
-  namespace: string;
+export type Chat = {
   key: string;
-  created_at: string;
-  content_type: string;
-  size: number;
-  pages?: number;
+  messages: Message[];
+  model: "llama3-70b-8192" | "llama3-8b-8192" | "mixtral-8x7b-32768" | "gemma-7b-it"
+  instruction: string;
 };

@@ -36,6 +36,13 @@ watch(isAuthenticated, async (isAuthenticated) => {
     state.user = await authorize();
   }
 });
+const login = () =>{
+    const { isAuthenticated, loginWithRedirect } = useAuth0();
+  if (!isAuthenticated) {
+    loginWithRedirect();
+  
+}
+}
 </script>
 <template>
   <Notifier />
@@ -44,7 +51,7 @@ watch(isAuthenticated, async (isAuthenticated) => {
   </div>
   <div v-else>
     <div class="container">
-      <slot name="landing" :login="loginWithRedirect" />
+      <slot name="landing" :login="login" />
     </div>
   </div>
 </template>
