@@ -31,7 +31,7 @@ watch(boxesRef, () => {
   };
   gsap.to(positions, {
     y: 2.5,
-    ...animProperties,
+    ...animProperties,w
   });
   gsap.to(rotations, {
     x: 2,

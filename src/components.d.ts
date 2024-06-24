@@ -8,6 +8,9 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AppAudio: typeof import('./components/AppAudio.vue')['default']
+    AppFile: typeof import('./components/AppFile.vue')['default']
+    AppImageFile: typeof import('./components/AppImageFile.vue')['default']
+    AppSearch: typeof import('./components/AppSearch.vue')['default']
     AppTextBlock: typeof import('./components/AppTextBlock.vue')['default']
     AppView: typeof import('./components/AppView.vue')['default']
     Auth: typeof import('./components/Auth.vue')['default']

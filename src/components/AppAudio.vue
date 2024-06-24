@@ -1,6 +1,5 @@
 <script setup lang="ts">
 const { fetchVoice, chunkText } = useSpeech()
-const SEPARATORS = [".","?","!" ]
 const props = defineProps<{ content: string }>()
 const lang = ref("es") as Ref<"es" | "en">
 const gender = ref("female") as Ref<"female"|"male">

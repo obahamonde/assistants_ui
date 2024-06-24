@@ -27,3 +27,9 @@ export type Chat = {
   model: "llama3-70b-8192" | "llama3-8b-8192" | "mixtral-8x7b-32768" | "gemma-7b-it"
   instruction: string;
 };
+
+export type CosimResult = {
+  id: string;
+  content: string;
+  score: number;
+}

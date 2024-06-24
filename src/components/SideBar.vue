@@ -1,11 +1,10 @@
 
 <script setup lang="ts">
 import type { Chat } from '@/types';
-import { QuipuBase } from '~/composables/quipubase';
 const props = defineProps<{
   namespace: string;
 }>();
-const q = new QuipuBase<Chat>("db",props.namespace);
+const emit = defineEmits(["open"]);
 const sidebarOpen = ref(false);
 const { state } = useStore();
 const modelPicture = computed(()=>`/svg/${state.current.model.toLowerCase()}.svg`);
@@ -13,15 +12,20 @@ const getChats = async () => {
   const { data } = await useFetch("https://chat.indiecloud.co/api/chat/"+props.namespace).json<Chat[]>();
   state.chats = unref(data) || [];
 };
+
 const toggleSidebar = async () => {
   sidebarOpen.value = !sidebarOpen.value;
+  emit("open", sidebarOpen.value);
   sidebarOpen.value ? await getChats() : null;
 };
 const handleChange = () => {
 // @ts-ignore
   state.current = { model: state.current.model, messages: [], instruction: ''};
 };
-
+const deleteChat = async (item: Chat) => {
+  await useFetch("https://chat.indiecloud.co/api/chat/"+props.namespace+"/"+item.key, { method: "DELETE" });
+  await getChats();
+};
 
 </script>
 
@@ -69,9 +73,9 @@ const handleChange = () => {
       </div>
           <div v-for="item in state.chats" :key="item.key" class="mt-2"
           @click="state.current = item; toggleSidebar()"
->
+>           
             <p class="col center p-2 hover:bg-gray-700 bg-gray-400 rounded-lg sh rounded cp" :class="state.current.key === item.key ? 'bg-gray-700' : ''">
-              <div class="bg-gray-100 text-dark rounded-3xl p-2 text-xs scale-75">{{ item.model }}</div>
+              <div class="bg-gray-100 text-dark rounded-3xl p-2 text-xs scale-75">{{ item.model }} <Icon icon="mdi-delete" class="text-red-500" @click.stop="deleteChat(item)" /></div>
               <div class="text-sm p-2">{{ item.messages[item.messages.length - 1].content.slice(0, 32) }}...</div>
             </p>
           </div>
