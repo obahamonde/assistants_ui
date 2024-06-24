@@ -16,7 +16,7 @@ const props = defineProps<Quote>();
         {{ props.quote }}<strong>{{ props.strong }}</strong>
       </div>
       <a
-        href="/cta"
+        href="/"
         class="button-wrapper-learn-more is-blue top-margin-10 w-inline-block"
       >
         <div class="get-started-text">{{ props.button }}</div>

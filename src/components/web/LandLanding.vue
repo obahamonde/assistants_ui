@@ -47,7 +47,7 @@ const props = defineProps<{
                   <strong>Your Growth</strong>
                 </div>
                 <a
-                  href="/cta"
+                  href="/"
                   class="button-wrapper-learn-more is-blue top-margin-10 w-inline-block"
                 >
                   <div class="get-started-text">Get Started</div>

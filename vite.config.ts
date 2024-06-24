@@ -2,7 +2,7 @@ import path from "node:path";
 import { defineConfig } from "vite";
 import Vue from "@vitejs/plugin-vue";
 import Pages from "vite-plugin-pages";
-import Layouts from "vite-plugin-vue-layouts"; // eslint-disable-line
+import Layouts from "vite-plugin-vue-layouts";
 import Components from "unplugin-vue-components/vite";
 import AutoImport from "unplugin-auto-import/vite";
 import Markdown from "vite-plugin-vue-markdown";
@@ -10,7 +10,6 @@ import LinkAttributes from "markdown-it-link-attributes";
 import Unocss from "unocss/vite";
 import Shiki from "markdown-it-shiki";
 import VueMacros from "unplugin-vue-macros/vite";
-import { templateCompilerOptions } from "@tresjs/core";
 
 export default defineConfig({
   css: {
@@ -30,7 +29,7 @@ export default defineConfig({
       "/api": {
         target: "https://chat.indiecloud.co/api",
         changeOrigin: true,
-        rewrite: (path: string) => path.replace(/^\/api/, ""),
+        rewrite: (path) => path.replace(/^\/api/, ""),
       },
     },
     watch: {
@@ -39,7 +38,7 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: "static",
+    outDir: "../static",
     emptyOutDir: true,
   },
   plugins: [
@@ -47,7 +46,6 @@ export default defineConfig({
       plugins: {
         vue: Vue({
           include: [/\.vue$/, /\.md$/],
-          ...templateCompilerOptions,
         }),
       },
     }),
@@ -78,7 +76,7 @@ export default defineConfig({
           },
         });
         md.use(LinkAttributes, {
-          matcher: (link: string) => /^https?:\/\//.test(link),
+          matcher: (link) => /^https?:\/\//.test(link),
           attrs: {
             target: "_blank",
             rel: "noopener",

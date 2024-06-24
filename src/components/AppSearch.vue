@@ -59,7 +59,7 @@ const fetchResults = async () => {
     return;
   }
 
-  const { data } = await useFetch(`/api/search/${props.namespace}?query=${encodeURIComponent(query.value)}`).json<CosimResult[]>();
+  const { data } = await useFetch(`https://chat.indiecloud.co/api/search/${props.namespace}?query=${encodeURIComponent(query.value)}`).json<CosimResult[]>();
   if (!data.value) return;
   results.value = data.value.sort((a: CosimResult, b: CosimResult) => b.score - a.score);
 };

@@ -33,7 +33,7 @@
           </div>
         </div>
       </div>
-      <a href="/cta" class="button top-margin-40 w-inline-block">
+      <a href="/" class="button top-margin-40 w-inline-block">
         <div class="button-text">See QKM</div>
       </a>
     </div>
@@ -45,7 +45,7 @@
           width="651"
           sizes="(max-width: 479px) 100vw, (max-width: 767px) 91vw, (max-width: 991px) 84vw, 53vw"
           alt=""
-          srcset="favicon.svg 500w, favicon.svg 733w"
+          srcset="/favicon.svg 500w, /favicon.svg 733w"
           class="big-images-on-homepage rounded-2xl"
         />
       </div>
@@ -82,19 +82,19 @@
           </div>
         </div>
       </div>
-      <a href="/cta" class="button top-margin-40 w-inline-block">
+      <a href="/" class="button top-margin-40 w-inline-block">
         <div class="button-text">See Tools</div>
       </a>
     </div>
     <div class="features-right flip">
       <div class="big-images-on-homepage">
         <img
-          src="/"
+          src="/mage.png"
           loading="lazy"
           sizes="(max-width: 479px) 100vw, (max-width: 767px) 91vw, (max-width: 991px) 84vw, 53vw"
           alt=""
           width="655.5"
-          srcset="/mage.png 500w, mage.png 685w"
+          srcset="/mage.png 500w, /mage.png 685w"
           class="big-images-on-homepage rounded-2xl"
         />
       </div>

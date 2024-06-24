@@ -19,7 +19,7 @@
     <div class="features-right">
       <div class="big-images-on-homepage">
         <img
-          src="indiecloud.png"
+          src="/indiecloud.png"
           loading="lazy"
           width="601"
           alt=""

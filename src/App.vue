@@ -1,6 +1,6 @@
 <script setup lang="ts">
 useTitle("Home");
-useFavicon("/favicon.png");
+useFavicon("/favicon.svg");
 </script>
 <template>
   <RouterView />

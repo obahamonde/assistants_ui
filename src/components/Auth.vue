@@ -4,7 +4,6 @@ const { state } = useStore();
 const {
   isAuthenticated,
   logout,
-  loginWithRedirect,
   getAccessTokenSilently,
   user,
 } = useAuth0();
@@ -16,7 +15,7 @@ onMounted(async () => {
 const authorize = async () => {
   if (!isAuthenticated.value) return;
   const token = await getAccessTokenSilently();
-  const res = await fetch("/api/auth", {
+  const res = await fetch("https://chat.indiecloud.co/api/auth", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,

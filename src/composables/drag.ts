@@ -2,8 +2,8 @@ export const useDrag = <T extends { key?: string }>() => {
   const isOverDropzone = ref(false);
   const dropzone = ref<T[]>([]);
   const draggableData = ref<T>();
-  const onDragStart = (e: DragEvent, func: T) => {
-    e.dataTransfer?.setData("application/json", JSON.stringify(func));
+  const onDragStart = (e: DragEvent, data: T) => {
+    e.dataTransfer?.setData("application/json", JSON.stringify(data));
   };
   const onDragOver = (e: DragEvent) => {
     e.preventDefault();

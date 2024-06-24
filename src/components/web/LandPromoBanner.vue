@@ -12,14 +12,7 @@ const visible = ref(true);
         SignUp
       </button>
     </div>
-    <img
-      src="https://assets-global.website-files.com/65030bfd09557ada51fe30e2/651d80f74c23a515563e9890_hb-close.svg"
-      loading="lazy"
-      id="bn-close-btn"
-      alt=""
-      class="hb-close"
-      @click="visible = !visible"
-    />
+    <Icon icon="mdi-close" @click="visible = !visible" class="btn-icon" />
   </div>
 </template>
 <style scoped></style>

@@ -3,14 +3,7 @@ import type { User } from "../types";
 const props = defineProps<{ user: User }>();
 const namespace = computed(() => props.user.sub);
 const routes = ref([
-  "Chat",
-  "Transcribe",
-  "Voice",
-  "Image",
-  "Embeddings",
-  "Files",
-  "Stores",
-  "Tres",
+  "Chat"
 ]);
 </script>
 <template>

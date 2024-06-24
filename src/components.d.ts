@@ -8,13 +8,10 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AppAudio: typeof import('./components/AppAudio.vue')['default']
-    AppFile: typeof import('./components/AppFile.vue')['default']
-    AppImageFile: typeof import('./components/AppImageFile.vue')['default']
     AppSearch: typeof import('./components/AppSearch.vue')['default']
     AppTextBlock: typeof import('./components/AppTextBlock.vue')['default']
     AppView: typeof import('./components/AppView.vue')['default']
     Auth: typeof import('./components/Auth.vue')['default']
-    LandBanner: typeof import('./components/web/LandBanner.vue')['default']
     LandFeature: typeof import('./components/web/LandFeature.vue')['default']
     LandFooter: typeof import('./components/web/LandFooter.vue')['default']
     LandHero: typeof import('./components/web/LandHero.vue')['default']

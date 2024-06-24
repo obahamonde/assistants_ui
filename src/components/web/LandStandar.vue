@@ -16,14 +16,14 @@
           implementation</strong
         >
       </div>
-      <a href="/security" class="button top-margin-40 w-inline-block">
+      <a href="/" class="button top-margin-40 w-inline-block">
         <div class="button-text">Learn More</div>
       </a>
     </div>
     <div class="features-right">
       <div class="big-images-on-homepage">
         <img
-          src="compliance.svg"
+          src="/compliance.svg"
           loading="lazy"
           width="410.5"
           alt=""
