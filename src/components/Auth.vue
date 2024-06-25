@@ -6,6 +6,7 @@ const {
   logout,
   getAccessTokenSilently,
   user,
+  loginWithRedirect,
 } = useAuth0();
 
 onMounted(async () => {
@@ -36,10 +37,8 @@ watch(isAuthenticated, async (isAuthenticated) => {
   }
 });
 const login = () =>{
-    const { isAuthenticated, loginWithRedirect } = useAuth0();
-  if (!isAuthenticated) {
+    if (!isAuthenticated.value && state.user) {
     loginWithRedirect();
-  
 }
 }
 </script>
