@@ -5,7 +5,7 @@ const props = defineProps({
   content: {
     type: String,
     default: "",
-  }
+  },
 });
 const md = MarkdownIt({
   html: true,
@@ -29,7 +29,7 @@ const md = MarkdownIt({
 </script>
 <template>
   <div
-    class="markdown-body bg-gray-500 text-white rounded sh w-full text-xs p-2"
+    class="markdown-body bg-gray-500 text-white rounded sh w-full p-4"
     v-html="md.render(props.content)"
   ></div>
 </template>

@@ -36,11 +36,11 @@ watch(isAuthenticated, async (isAuthenticated) => {
     state.user = await authorize();
   }
 });
-const login = () =>{
-    if (!isAuthenticated.value && state.user) {
+const login = () => {
+  if (!isAuthenticated.value) {
     loginWithRedirect();
-}
-}
+  }
+};
 </script>
 <template>
   <Notifier />

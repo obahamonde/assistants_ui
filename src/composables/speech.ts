@@ -1,5 +1,5 @@
 export const useSpeech = () => {
-  const BASE_URL = "https://voice.indiecloud.co"
+  const BASE_URL = "https://voice.indiecloud.co";
   const speech = useSpeechRecognition({
     continuous: true,
   });
@@ -16,7 +16,7 @@ export const useSpeech = () => {
     const chunks: string[] = [];
     let currentChunk = "";
 
-    text.split(separators).forEach(segment => {
+    text.split(separators).forEach((segment) => {
       if ((currentChunk + segment).length > maxTokens) {
         chunks.push(currentChunk.trim());
         currentChunk = segment + ".";
@@ -32,22 +32,23 @@ export const useSpeech = () => {
     return chunks;
   };
 
-  const fetchVoice = async (text: string, lang: "en" | "es", gender: "male" | "female"): Promise<HTMLAudioElement> => {
+  const fetchVoice = async (
+    text: string,
+    lang: "en" | "es",
+    gender: "male" | "female",
+  ): Promise<HTMLAudioElement> => {
     const body = JSON.stringify({
       text: text,
       lang: lang,
-      gender: gender
+      gender: gender,
     });
-    const { data: response } = await useFetch(
-      `${BASE_URL}/api/generate`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body
+    const { data: response } = await useFetch(`${BASE_URL}/api/generate`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
       },
-    ).blob();
+      body,
+    }).blob();
     if (!response.value) throw new Error("No response from server");
     const blobAudio = new Blob([response.value], { type: "audio/mp3" });
     const audioUrl = URL.createObjectURL(blobAudio);
@@ -81,6 +82,6 @@ export const useSpeech = () => {
     speech,
     fetchVoice,
     cloneVoice,
-    chunkText
+    chunkText,
   };
 };

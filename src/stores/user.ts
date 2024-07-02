@@ -6,7 +6,16 @@ export const useStore = defineStore("state", () => {
     notifications: [] as Notification[],
     user: null as User | null,
     chats: [] as Chat[],
-    current: { messages: [] as Message[], model: "llama3-8b-8192", instruction: "You are a helpful assistant" } as Chat,
+    current: {
+      messages: [] as Message[],
+      model: "llama3-8b-8192",
+      instruction: "You are a helpful assistant",
+    } as Chat,
+    queue: {
+      messages: [] as Message[],
+      model: "llama3-8b-8192",
+      instruction: "You are a tool orchestrator",
+    } as Chat,
   });
 
   const setState = (newState: any) => {

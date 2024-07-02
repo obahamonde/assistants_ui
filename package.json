@@ -8,6 +8,11 @@
   },
   "dependencies": {
     "@auth0/auth0-vue": "^2.3.3",
+    "@formkit/drag-and-drop": "^0.1.4",
+    "@tiptap/extension-image": "^2.4.0",
+    "@tiptap/extension-link": "^2.4.0",
+    "@tiptap/starter-kit": "^2.4.0",
+    "@tiptap/vue-3": "^2.4.0",
     "@unhead/vue": "^1.1.30",
     "@unocss/reset": "^0.53.5",
     "@vueuse/core": "^10.2.1",

@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { useAuth0 } from '@auth0/auth0-vue';
-const { isAuthenticated, loginWithRedirect } = useAuth0();
+import { useAuth0 } from "@auth0/auth0-vue";
+import Landing from "~/layouts/landing.vue";
+const { isAuthenticated } = useAuth0();
 useTitle("Home");
 useFavicon("/favicon.png");
 </script>
@@ -12,8 +13,8 @@ useFavicon("/favicon.png");
         <AppView :user="user" />
       </template>
       <template #landing="{ login }" v-else>
-        <section class="h-full w-full min-h-100vh min-w-100vw">
-          <LandLanding :login="login" />
+        <section class="h-full w-full">
+          <PageLanding :login="login" />
         </section>
       </template>
     </Auth>

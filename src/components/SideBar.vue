@@ -26,6 +26,7 @@ const deleteChat = async (item: Chat) => {
   await useFetch("https://chat.indiecloud.co/api/chat/"+props.namespace+"/"+item.key, { method: "DELETE" });
   await getChats();
 };
+onMounted(getChats);
 
 </script>
 
@@ -68,7 +69,7 @@ const deleteChat = async (item: Chat) => {
       </nav>
       <div class="my-4  col center w-full">
         <button class="bg-accent text-white px-4 py-2 sh rounded-lg cp scale mx-auto">
-          Add Team workspace <strong>+</strong>
+          New Chat <strong>+</strong>
         </button>
       </div>
           <div v-for="item in state.chats" :key="item.key" class="mt-2"

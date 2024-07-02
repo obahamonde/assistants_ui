@@ -180,7 +180,7 @@ class QuipuBase<T> implements IQuipuBase<T> {
   constructor(
     public service: "db" | "chat" | "voice" | "transcribe",
     public namespace: string,
-  ) { }
+  ) {}
 
   @jsonSchemaGenerator("data")
   getJsonSchema<T>(data: T): JsonSchema {
@@ -285,12 +285,12 @@ class QuipuBase<T> implements IQuipuBase<T> {
     });
     return (await response.json()) as Status;
   }
-  async chat(chat: Chat, callback: (data: string) => any) {
-    const url = `https://chat.${DOMAIN}/api/chat/${this.namespace}`;
+  async chat(chat: Chat, callback: (data: string) => any, useTools: boolean) {
+    const url = `https://chat.${DOMAIN}/api/chat/${this.namespace}?useTools=${useTools}`;
     await useStream<Chat>(url, chat, callback);
   }
 }
 
 export type { Document, Status, JsonSchema, Action };
 
-export { QuipuBase };
+export { QuipuBase, useStream };

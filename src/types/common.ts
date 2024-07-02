@@ -19,12 +19,17 @@ export type User = {
 export type Message = {
   content: string;
   role: "user" | "assistant" | "system";
+  type?: "image" | "audio";
 };
 
 export type Chat = {
   key: string;
   messages: Message[];
-  model: "llama3-70b-8192" | "llama3-8b-8192" | "mixtral-8x7b-32768" | "gemma-7b-it"
+  model:
+    | "llama3-70b-8192"
+    | "llama3-8b-8192"
+    | "mixtral-8x7b-32768"
+    | "gemma-7b-it";
   instruction: string;
 };
 
@@ -32,4 +37,4 @@ export type CosimResult = {
   id: string;
   content: string;
   score: number;
-}
+};
