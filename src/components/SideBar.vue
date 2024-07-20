@@ -65,7 +65,7 @@ onMounted(getChats);
               </select>
             </p>
         <div class="text-md p-2 text-center text-white">Instructions</div>
-         <textarea v-model='state.current.instruction' class="bg-gray-700 w-full p-2 rounded sh focus:outline-none focus:ring-2 focus:ring-teal focus:border-transparent" placeholder="Instructions"></textarea>
+         <textarea v-model='state.current.instruction' class="bg-gray-700 w-full p-2 rounded sh focus:outline-none focus:ring-2 focus:ring-teal focus:border-transparent text-white" placeholder="Instructions"></textarea>
       </nav>
       <div class="my-4  col center w-full">
         <button class="bg-accent text-white px-4 py-2 sh rounded-lg cp scale mx-auto">

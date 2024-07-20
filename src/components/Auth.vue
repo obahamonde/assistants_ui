@@ -30,21 +30,22 @@ const authorize = async () => {
   });
   return data;
 };
-
+const router = useRouter();
 watch(isAuthenticated, async (isAuthenticated) => {
   if (isAuthenticated) {
     state.user = await authorize();
   }
 });
-const login = () => {
-  if (!isAuthenticated.value) {
-    loginWithRedirect();
-  }
+const login = async() => {
+    await loginWithRedirect();
+    await authorize();
+    
+    router.push("/chat");
 };
 </script>
 <template>
   <Notifier />
-  <div v-if="isAuthenticated && state.user">
+  <div v-if="isAuthenticated">
     <slot :user="state.user" :logout="logout" />
   </div>
   <div v-else>

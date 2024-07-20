@@ -7,7 +7,7 @@ const routes = ref(["Chat"]);
   <div>
     <RouterLink
       :to="`/${route.toLowerCase()}/${props.user.sub}`"
-      class="text-secondary font-sans underline-none hover:font-extrabold hover:text-white hover:text-underline text-xl"
+      class="text-secondary font-sans underline-none hover:font-extrabold hover:text-gray-500 hover:text-underline text-xl"
       v-for="route in routes"
       >{{ route }}</RouterLink
     >

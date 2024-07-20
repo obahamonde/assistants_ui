@@ -2,7 +2,6 @@
 const props = defineProps<{
 	login: () => void;
 }>();
-
 const cards = ref([
   {
     title: "Quipubase",

@@ -1,17 +1,18 @@
 <script setup lang="ts">
 const { fetchVoice } = useSpeech();
 const props = defineProps<{ content: string }>();
-const lang = ref("es") as Ref<"es" | "en">;
+const lang = ref("en") as Ref<"es" | "en">;
 const gender = ref("female") as Ref<"female" | "male">;
 const isHandling = ref(false);
 
 const handleVoice = async () => {
   isHandling.value = true;
   try {
-    const audio = await fetchVoice(props.content, lang.value, gender.value);
-    audio.play();
+    await fetchVoice(props.content, lang.value, gender.value);
   } catch (error) {
     console.error(error);
+  } finally {
+    isHandling.value = false;
   }
 };
 </script>

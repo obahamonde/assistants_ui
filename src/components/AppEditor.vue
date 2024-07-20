@@ -59,67 +59,67 @@ onUnmounted(() => {
     >
       <Icon
         icon="mdi-format-bold"
-        class="x2 p-1 text-gray-500 z-50 cp scale"
+        class="x2 p-1 text-white z-50 cp scale"
         @click="editor.chain().toggleBold().run()"
       />
       <Icon
         icon="mdi-format-italic"
-        class="x2 p-1 text-gray-500 z-50 cp scale"
+        class="x2 p-1 text-white z-50 cp scale"
         @click="editor.chain().toggleItalic().run()"
       />
       <Icon
         icon="mdi-format-strikethrough-variant"
-        class="x2 p-1 text-gray-500 z-50 cp scale"
+        class="x2 p-1 text-white z-50 cp scale"
         @click="editor.chain().toggleStrike().run()"
       />
       <Icon
         icon="mdi-format-quote-close"
-        class="x2 p-1 text-gray-500 z-50 cp scale"
+        class="x2 p-1 text-white z-50 cp scale"
         @click="editor.chain().toggleBlockquote().run()"
       />
       <Icon
         icon="mdi-format-list-bulleted"
-        class="x2 p-1 text-gray-500 z-50 cp scale"
+        class="x2 p-1 text-white z-50 cp scale"
         @click="editor.chain().toggleBulletList().run()"
       />
       <Icon
         icon="mdi-format-list-numbered"
-        class="x2 p-1 text-gray-500 z-50 cp scale"
+        class="x2 p-1 text-white z-50 cp scale"
         @click="editor.chain().toggleOrderedList().run()"
       />
       <Icon
         icon="mdi-code-braces"
-        class="x2 p-1 text-gray-500 z-50 cp scale"
+        class="x2 p-1 text-white z-50 cp scale"
         @click="editor.chain().toggleCodeBlock().run()"
       />
       <Icon
         icon="mdi-format-header-1"
-        class="x2 p-1 text-gray-500 z-50 cp scale"
+        class="x2 p-1 text-white z-50 cp scale"
         @click="editor.chain().toggleHeading({ level: 1 }).run()"
       />
       <Icon
         icon="mdi-format-header-2"
-        class="x2 p-1 text-gray-500 z-50 cp scale"
+        class="x2 p-1 text-white z-50 cp scale"
         @click="editor.chain().toggleHeading({ level: 2 }).run()"
       />
       <Icon
         icon="mdi-format-header-3"
-        class="x2 p-1 text-gray-500 z-50 cp scale"
+        class="x2 p-1 text-white z-50 cp scale"
         @click="editor.chain().toggleHeading({ level: 3 }).run()"
       />
       <Icon
         icon="mdi-format-header-4"
-        class="x2 p-1 text-gray-500 z-50 cp scale"
+        class="x2 p-1 text-white z-50 cp scale"
         @click="editor.chain().toggleHeading({ level: 4 }).run()"
       />
       <Icon
         icon="mdi-format-header-5"
-        class="x2 p-1 text-gray-500 z-50 cp scale"
+        class="x2 p-1 text-white z-50 cp scale"
         @click="editor.chain().toggleHeading({ level: 5 }).run()"
       />
       <Icon
         icon="mdi-format-header-6"
-        class="x2 p-1 text-gray-500 z-50 cp scale"
+        class="x2 p-1 text-white z-50 cp scale"
         @click="editor.chain().toggleHeading({ level: 6 }).run()"
       />
       <img

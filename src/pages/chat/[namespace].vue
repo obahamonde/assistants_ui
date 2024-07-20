@@ -29,7 +29,6 @@ const { state } = useStore();
           v-if="state.user && useTools"
         />
       </section>
-      <div class="col center"></div>
     </div>
   </div>
 </template>

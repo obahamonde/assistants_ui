@@ -31,6 +31,11 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
+      "/voiceapi": {
+        target: "https://voice.indiecloud.co",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/voiceapi/, ""),
+      },
     },
     watch: {
       usePolling: true,
