@@ -4,10 +4,10 @@ const props = defineProps<{
 }>();
 const cards = ref([
   {
-    title: "Quipubase",
+    title: "",
     description: "A knowledge database focused on user productivity.",
     image: "/favicon.svg",
-    content: "Quipubase is our cutting-edge knowledge database designed to enhance user productivity. It offers advanced organization, quick retrieval, and seamless integration with your existing workflows."
+    content: " is our cutting-edge knowledge database designed to enhance user productivity. It offers advanced organization, quick retrieval, and seamless integration with your existing workflows."
   },
   {
     title: "IndieCloud",
@@ -18,13 +18,13 @@ const cards = ref([
   {
     title: "AI Integration",
     description: "Seamlessly integrate AI capabilities into your workflow.",
-    image: "/logo.png",
+    image: "/favicon.svg",
     content: "Our AI integration feature allows you to harness the power of artificial intelligence within your existing systems. From automated data processing to intelligent recommendations, AI becomes an integral part of your productivity ecosystem."
   },
   {
     title: "Data Security",
     description: "Enterprise-grade security to protect your valuable information.",
-    image: "/globant.svg",
+    image: "/favicon.svg",
     content: "We prioritize the safety of your data with enterprise-grade security measures. Our multi-layered approach includes encryption, access controls, and regular security audits to ensure your information remains protected at all times."
   },
 ]);
@@ -32,7 +32,7 @@ const cards = ref([
 const selectedCard = ref(null);
 const isModalOpen = ref(false);
 
-const openModal = (card) => {
+const openModal = (card: any) => {
   selectedCard.value = card;
   isModalOpen.value = true;
 };
@@ -46,9 +46,9 @@ const closeModal = () => {
   <section class="col center w-screen h-full srelative overflow-hidden bg-dark">
     <div class="absolute inset-0 bg-gradient-to-br from-primary to-secondary animate-gradient"></div>
     <div class="max-w-6xl w-full relative z-10">
-      <h1 class="text-6xl font-bold text-center mb-4 animate-gradient-text title-fonts">IndieCloud</h1>
 
-      <img src="/globant.svg" alt="IndieCloud Logo" class="h-12 mx-auto my-4" />
+
+      <img src="/favicon.svg" alt="IndieCloud Logo" class="h-64 mx-auto my-4" />
       <h2 class="text-2xl text-center text-accent mb-12 font-sans">Revolutionizing productivity with AI-powered tools</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <div v-for="card in cards" :key="card.title" class="bg-accent rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 slide-up sh-xl">

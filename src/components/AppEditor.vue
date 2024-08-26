@@ -1,16 +1,13 @@
 <script setup lang="ts">
 import { useEditor, EditorContent } from "@tiptap/vue-3";
-import { QuipuBase } from "~/composables/quipubase";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
 import Image from "@tiptap/extension-image";
+import { OpenAI } from "openai";
+const ai = new OpenAI({baseURL:"https://indiecloud.co/api/v1",apiKey:"[EMPTY]",dangerouslyAllowBrowser: true});
 const { modelValue } = defineModels<{
   modelValue: string;
 }>();
-const props = defineProps<{
-  namespace: string;
-}>();
-const db = new QuipuBase("chat",props.namespace)
 const editor = useEditor({
   extensions: [
     StarterKit,
@@ -28,11 +25,13 @@ const onTab = (e: KeyboardEvent) => {
 };
 const autoComplete = async () => {
   if (!editor.value) return;
-  const context = editor.value.getText();
   isTyping.value = true;
-  await db.chat({key:"completions",messages:[{content:context,role:"user"}],model:"llama3-70b-8192",instruction:"You are an autocompletion Chatbot, help the user automate his job by writing the next paragraph don't add any prior or further content, just the autocompletion"},(response)=>{
-    editor.value?.commands.setContent(editor.value?.getHTML() + response);},false)
+  const prompt = editor.value.getText();
+ const completion = await ai.completions.create({prompt,model:"llama3-8b-8192"});
+  editor.value.commands.setContent(prompt+completion.choices[0].text);
+   isTyping.value = false;
 };
+
 const handleKeyDown = async (e: KeyboardEvent) => {
   if (!editor.value) return;
 
@@ -40,6 +39,7 @@ const handleKeyDown = async (e: KeyboardEvent) => {
     e.preventDefault();
     await autoComplete();
   }
+  
 };
 
 onMounted(() => {

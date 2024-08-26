@@ -27,7 +27,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "https://chat.indiecloud.co/api",
+        target: "https://indiecloud.co/api/v1",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },

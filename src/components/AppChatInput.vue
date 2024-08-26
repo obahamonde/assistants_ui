@@ -6,8 +6,6 @@ const props = defineProps<{
   useTools: boolean;
 }>();
 
-const q = new QuipuBase("chat", props.namespace);
-
 const handler = (data: string) => {
   if (!state.current) return;
   if (

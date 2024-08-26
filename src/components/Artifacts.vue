@@ -2,6 +2,7 @@
 const props = defineProps<{
   namespace: string;
 }>();
+const file_id = computed(()=>props.namespace+String(useNow().value.getTime()))
 const streamDoc = async(url:string,data:FormData, callback:(data:string)=>any, options?:RequestInit )=>{
   const response = await fetch(url, {
     ...options,
@@ -50,7 +51,7 @@ const { state } = useStore();
 const showImageUpload = ref(false);
 const sidebarOpen = ref(false);
 const apiUrl = computed(() => {
-  return `https://db.indiecloud.co/api/upload/${props.namespace}`;
+  return `/api/vector_stores/${props.namespace}/files`;
 });
 const toggleSidebar = async () => {
   sidebarOpen.value = !sidebarOpen.value;
@@ -109,7 +110,7 @@ const uploadArtifacts = async () => {
     </button>
     <aside
       :class="[
-        'fixed top-0 right-0 w-1/2 sh h-full p-2 text-white bg-gradient-to-br animate-gradient-bg overflow-y-auto backdrop-blur-sm z-50',
+        'fixed top-0 right-0 w-2/3 sh h-full px-8 text-white bg-gradient-to-br animate-gradient-bg overflow-y-auto backdrop-blur-sm z-50',
         'transition-transform duration-500 ease-in-out transform z-40',
         sidebarOpen ? 'translate-x-0' : 'translate-x-full',
       ]"
@@ -121,6 +122,7 @@ const uploadArtifacts = async () => {
         class="cp scale x2 cp scale"
       />
        <AppSearch :namespace="props.namespace"  />
+       
 </div>
       <div
         class="col center p-6 m-4 border-2 border-dashed border-gray-200 rounded-lg cursor-pointer"
@@ -129,6 +131,7 @@ const uploadArtifacts = async () => {
         @click="triggerArtifactInput"
         v-if="showImageUpload"
       >
+     
         <p class="text-gray-200">
           Drag and drop your files here or click to upload
         </p>
@@ -151,12 +154,13 @@ const uploadArtifacts = async () => {
         <Icon icon="mdi:close" class="text-white" />
       </button>
       </div>
-    <div class="col center p-4">
-    <div v-for="artifact in state.queue.messages" >
+    <div class="col center py-4 mx-8">
+    <div v-for="artifact in state.queue.messages"  >
     <AppTextBlock :content="artifact.content" />
     </div>
-    <AppEditor :namespace="props.namespace" />
+   
     </div>
+ <AppEditor :namespace="props.namespace" />
     </aside>
   </div>
 </template>

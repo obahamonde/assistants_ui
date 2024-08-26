@@ -18,12 +18,15 @@
           </button>
           <input
             type="text"
-            v-model="query"
-            @input="fetchResults(topK)"
+            v-model="body.query"
+            @input="fetchResults"
             placeholder="Search..."
             class="w-full p-2 border bg-gray-500  rounded-md mb-4 z-50  fixed top-0 mx-auto"
             rows="4"
-          /><input type="range" v-model="topK" class="z-50 fixed top-10 mx-auto" />
+          /><input type="range" 
+          @change="fetchResults"
+          v-model="body.top_k" class="z-50 fixed top-10 mx-auto" />
+
           <div v-if="results.length" class="gap-4 col center -top-40vh fixed">
             <div
               v-for="result in results"
@@ -37,8 +40,8 @@
           </div>
           <p v-else class="text-black z-50 top-12 fixed">
         <span>You will search for the top </span>
-        <span>{{topK}} </span>
-        <span> {{topK > 1 ? ' results' : ' result'}}</span>
+        <span>{{body.top_k}} </span>
+        <span> {{body.top_k > 1 ? ' results' : ' result'}}</span>
       </p>
     </div>
       </div>
@@ -51,21 +54,32 @@ import { CosimResult } from "@/types";
 const props = defineProps<{
   namespace: string;
 }>();
-const topK = ref(5);
-const showOverlay = ref(false);
-const query = ref("");
-const results = ref<CosimResult[]>([]);
 
-const fetchResults = async (topK:number) => {
-  if (!query.value.trim()) {
+const showOverlay = ref(false);
+const results = ref<CosimResult[]>([]);
+const body = reactive(
+  {
+    query: "",
+    top_k: 5,
+    vector_store_id: props.namespace,
+  }
+);
+const fetchResults = async () => {
+  if (!body.query.trim()) {
     results.value = [];
     return;
   }
-  
   const { data } = await useFetch(
-    `https://chat.indiecloud.co/api/search/${props.namespace}?query=${encodeURIComponent(query.value)}&topK=${encodeURIComponent(topK)}`
+    `/api/search`,{
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  }
   ).json<CosimResult[]>();
-  results.value = data.value as CosimResult[];
+  console.log(results.value);
+  results.value = unref(data) as CosimResult[];
 };
 </script>
 

@@ -4,10 +4,16 @@ useFavicon("/favicon.png");
 </script>
 
 <template>
-  <section class="col center overflow-auto">
+  
     <Auth>
-      <template #default="{ user }">
-        <AppView :user="user" v-if="user" />
+      <template #default="{ user,logout }">
+<section class="col mt-100 center max-h-100vh h-full">
+<AppView :user="user" v-if="user" />
+     
+        <AppImages />
+        <AppSpeech />
+      
+  </section>
       </template>
       <template #landing="{ login }">
         <section class="h-full w-full">
@@ -15,5 +21,4 @@ useFavicon("/favicon.png");
         </section>
       </template>
     </Auth>
-  </section>
 </template>

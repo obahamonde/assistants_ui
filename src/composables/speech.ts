@@ -1,7 +1,7 @@
 import { useSpeechRecognition } from "@vueuse/core"; // Assuming useSpeechRecognition is from @vueuse/core
 
 export const useSpeech = () => {
-  const BASE_URL = "https://voice.indiecloud.co";
+  const BASE_URL = "https://indiecloud.co";
   const speech = useSpeechRecognition({
     continuous: true,
   });

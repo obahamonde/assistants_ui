@@ -1,12 +1,7 @@
 <script setup lang="ts">
 const { state } = useStore();
-const play = (status: string) => {
-  const audio = new Audio(`/audio/${status}.mp3`);
-  audio.play();
-};
 watchEffect(() => {
   if (state.notifications.length > 0) {
-    play(state.notifications[0].status);
     setTimeout(() => {
       state.notifications.pop();
     }, 3000);

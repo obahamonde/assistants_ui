@@ -3,20 +3,21 @@
 import type { Chat } from '@/types';
 const props = defineProps<{
   namespace: string;
+  logout: () => void;
 }>();
+const { state } = useStore();
 const emit = defineEmits(["open"]);
 const sidebarOpen = ref(false);
-const { state } = useStore();
 const modelPicture = computed(()=>`/svg/${state.current.model.toLowerCase()}.svg`);
-const getChats = async () => {
-  const { data } = await useFetch("https://chat.indiecloud.co/api/chat/"+props.namespace).json<Chat[]>();
-  state.chats = unref(data) || [];
-};
+// const getChats = async () => {
+//   const { data } = await useFetch("https://chat.indiecloud.co/api/chat/"+props.namespace).json<Chat[]>();
+//   state.chats = unref(data) || [];
+// };
 
 const toggleSidebar = async () => {
   sidebarOpen.value = !sidebarOpen.value;
   emit("open", sidebarOpen.value);
-  sidebarOpen.value ? await getChats() : null;
+  // sidebarOpen.value ? await getChats() : null;
 };
 const handleChange = () => {
 // @ts-ignore
@@ -24,9 +25,9 @@ const handleChange = () => {
 };
 const deleteChat = async (item: Chat) => {
   await useFetch("https://chat.indiecloud.co/api/chat/"+props.namespace+"/"+item.key, { method: "DELETE" });
-  await getChats();
+  // await getChats();
 };
-onMounted(getChats);
+// onMounted(getChats);
 
 </script>
 
@@ -80,7 +81,7 @@ onMounted(getChats);
               <div class="text-sm p-2">{{ item.messages[item.messages.length - 1].content.slice(0, 32) }}...</div>
             </p>
           </div>
-      
+     
     </aside>
   </div>
 </template>

@@ -1,10 +1,12 @@
 import { defineStore, acceptHMRUpdate } from "pinia";
-import type { Notification, User, Chat, Message } from "~/types";
+import type { Notification, Chat, Message } from "~/types";
+import type { User } from "@auth0/auth0-vue";
+
 
 export const useStore = defineStore("state", () => {
   const state = reactive({
     notifications: [] as Notification[],
-    user: null as User | null,
+    user: {} as User,
     chats: [] as Chat[],
     current: {
       messages: [] as Message[],

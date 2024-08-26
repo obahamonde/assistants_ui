@@ -9,7 +9,7 @@ const props = defineProps({
       href="/"
       aria-current="page"
       class="nav_brand-logo-link w-nav-brand w--current"
-      ><img src="/logo.png" loading="lazy" width="181" alt="IndieCloud Logo"
+      ><img src="/favicon.svg" loading="lazy" width="181" alt="IndieCloud Logo"
     /></a>
     <div class="nav-right-wrapper">
       <button @click="props.login" class="button w-inline-block">
