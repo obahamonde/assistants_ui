@@ -1,28 +1,25 @@
 <script setup lang="ts">
+import { OpenAI } from "openai";
 const { state } = useStore();
 
-const props = defineProps<{
-  namespace: string;
-  useTools: boolean;
-}>();
-
-const handler = (data: string) => {
-  if (!state.current) return;
-  if (
-    state.current.messages[state.current.messages.length - 1].role === "user"
-  ) {
-    state.current.messages.push({ role: "assistant", content: data });
-  } else {
-    state.current.messages[state.current.messages.length - 1].content += data;
-  }
-};
+const client = new OpenAI({
+  baseURL: "https://indiecloud.co/v1",
+  apiKey: "sk-proj-1234567890",
+  dangerouslyAllowBrowser: true,
+});
 
 const useChat = async (content: string) => {
   state.current.messages.push({ role: "user", content });
-  await q.chat(state.current, handler, props.useTools);
+  const response = await client.chat.completions.create({
+    model: state.current.model,
+    messages: state.current.messages,
+  });
+  const text = response.choices[0].message.content;
+  if (text) {
+    state.current.messages.push({ role: "assistant", content: text });
+  }
 };
 </script>
 <template>
-
-    <AppInput @send="useChat" />
+  <AppInput @send="useChat" />
 </template>

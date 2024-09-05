@@ -2,12 +2,7 @@
 import { useAuth0, User } from "@auth0/auth0-vue";
 
 const { state } = useStore();
-const {
-  isAuthenticated,
-  logout,
-  user,
-  loginWithRedirect,
-} = useAuth0();
+const { isAuthenticated, logout, user, loginWithRedirect } = useAuth0();
 const router = useRouter();
 
 onMounted(async () => {
@@ -20,19 +15,19 @@ const authorize = () => {
       state.user = user;
     }
   });
-}
+};
 
 watch(isAuthenticated, async (isAuthenticated) => {
   if (isAuthenticated) {
-     authorize()
+    authorize();
   }
-})
+});
 
 const login = async () => {
-  await loginWithRedirect()
-  authorize()
-  router.push("/chat")
-}
+  await loginWithRedirect();
+  authorize();
+  router.push("/chat");
+};
 </script>
 <template>
   <Notifier />

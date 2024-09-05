@@ -12,7 +12,7 @@ export const useRequest = <T>() => {
   ) => {
     const { data, error, isFetching } = await useFetch(url, options || {}, {
       refetch: refetch || false,
-    }).json();
+    }).json<T>();
     response.value = unref(data) as UnwrapRef<T>;
     err.value = unref(error) as Error;
     loading.value = unref(isFetching.value) as boolean;

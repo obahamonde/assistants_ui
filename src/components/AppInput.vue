@@ -1,5 +1,4 @@
 <template>
-<AppEditor />
   <textarea
     v-model="content"
     @keyup.enter="
@@ -7,9 +6,8 @@
       content = '';
     "
     placeholder="Type your message here..."
-    class="bg-gray-700 w-full max-w-192 min-w-128 p-2 rounded sh focus:outline-none focus:ring-2 text-white focus:ring-teal focus:border-transparent transition duration-300 ease-in-out transform  max-h-48 focus:scale-105 text-white"
+    class="bg-gray-700 w-full max-w-192 min-w-128 p-2 rounded sh focus:outline-none focus:ring-2 text-white focus:ring-teal focus:border-transparent transition duration-300 ease-in-out transform max-h-48 focus:scale-105 text-white"
   ></textarea>
-
 </template>
 
 <script setup lang="ts">

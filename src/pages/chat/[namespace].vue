@@ -7,15 +7,14 @@ const { state } = useStore();
   <div class="col center p-8 overflow-y-auto">
     <div class="row center mx-auto gap-4">
       <section class="col center gap-4">
-       
-          <div class="z-50 mx-auto top-4 fixed">
+        <div class="z-50 mx-auto top-4 fixed">
           <AppChatInput
             :namespace="props.namespace"
             :useTools="useTools"
             v-if="!useTools"
             class="animate-fade-in"
           />
-          </div>
+        </div>
         <AppMessages
           :messages="state.current.messages"
           :modelPicture="state.current.model.toLowerCase()"

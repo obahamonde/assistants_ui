@@ -4,7 +4,11 @@ import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
 import Image from "@tiptap/extension-image";
 import { OpenAI } from "openai";
-const ai = new OpenAI({baseURL:"https://indiecloud.co/api/v1",apiKey:"[EMPTY]",dangerouslyAllowBrowser: true});
+const ai = new OpenAI({
+  baseURL: "https://indiecloud.co/v1",
+  apiKey: "[EMPTY]",
+  dangerouslyAllowBrowser: true,
+});
 const { modelValue } = defineModels<{
   modelValue: string;
 }>();
@@ -27,9 +31,12 @@ const autoComplete = async () => {
   if (!editor.value) return;
   isTyping.value = true;
   const prompt = editor.value.getText();
- const completion = await ai.completions.create({prompt,model:"llama3-8b-8192"});
-  editor.value.commands.setContent(prompt+completion.choices[0].text);
-   isTyping.value = false;
+  const completion = await ai.completions.create({
+    prompt,
+    model: "llama3-8b-8192",
+  });
+  editor.value.commands.setContent(prompt + completion.choices[0].text);
+  isTyping.value = false;
 };
 
 const handleKeyDown = async (e: KeyboardEvent) => {
@@ -39,7 +46,6 @@ const handleKeyDown = async (e: KeyboardEvent) => {
     e.preventDefault();
     await autoComplete();
   }
-  
 };
 
 onMounted(() => {
@@ -54,7 +60,7 @@ onUnmounted(() => {
 <template>
   <div class="w-full">
     <nav
-      class="row center bg-black rounded sh p-2  text-white gap-4 px-4"
+      class="row center bg-black rounded sh p-2 text-white gap-4 px-4"
       v-if="editor"
     >
       <Icon

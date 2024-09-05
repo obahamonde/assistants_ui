@@ -26,15 +26,10 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      "/api": {
-        target: "https://indiecloud.co/api/v1",
+      "/v1": {
+        target: "https://indiecloud.co/v1",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ""),
-      },
-      "/voiceapi": {
-        target: "https://voice.indiecloud.co",
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/voiceapi/, ""),
+        rewrite: (path) => path.replace(/^\/v1/, ""),
       },
     },
     watch: {

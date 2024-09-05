@@ -17,8 +17,7 @@ const props = defineProps<{
             class="x2 rf sh"
             :class="message.role === 'user' ? 'float-right m-1' : 'float-left m-1'"
           />
-          <div>
-            <AppAudio :content="message.content" />
+          <div> 
             <AppTextBlock :content="message.content" />
           </div>
         </div>

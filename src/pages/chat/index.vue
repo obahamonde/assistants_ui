@@ -9,7 +9,6 @@ useFavicon("/favicon.png");
   <section class="col center overflow-auto">
     <Auth>
       <template #default="{ user }" v-if="isAuthenticated">
-        
         <AppView :user="user" v-if="user" />
         <Icon icon="mdi:loading" class="animate-spin" v-else />
       </template>
