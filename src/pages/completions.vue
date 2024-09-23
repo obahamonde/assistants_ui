@@ -1,3 +1,3 @@
 <template>
-<h1>Hi</h1>
+<AppEditor />
 </template>

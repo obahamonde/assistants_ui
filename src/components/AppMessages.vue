@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Message } from '~/types';
 import { User } from '@auth0/auth0-vue';
+import { Message } from '~/types';
 
 const props = defineProps<{
 	messages: Message[];

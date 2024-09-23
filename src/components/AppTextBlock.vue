@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import MarkdownIt from "markdown-it";
 import hljs from "highlight.js";
+import MarkdownIt from "markdown-it";
 const props = defineProps({
   content: {
     type: String,

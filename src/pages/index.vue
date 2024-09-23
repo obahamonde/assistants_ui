@@ -7,11 +7,11 @@ useFavicon("/favicon.png");
   <Auth>
     <template #default="{ user, logout }">
       <section class="col mt-100 center max-h-100vh h-full">
-        <AppView :user="user" v-if="user" />
+        <AppView :user="user" v-if="user" :logout="logout" />
         <RouterLink to="/" class="btn" v-if="user" @click="logout">
           Logout
         </RouterLink>
-        <AppView :user="user" />
+        <AppView :user="user" :logout="logout" v-else />
       </section>
     </template>
     <template #landing="{ login }">

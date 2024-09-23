@@ -12,6 +12,9 @@ declare module 'vue' {
     AppChatInput: typeof import('./components/AppChatInput.vue')['default']
     AppDnD: typeof import('./components/AppDnD.vue')['default']
     AppEditor: typeof import('./components/AppEditor.vue')['default']
+    AppFileManager: typeof import('./components/AppFileManager.vue')['default']
+    AppFineTuning: typeof import('./components/AppFineTuning.vue')['default']
+    AppFinetuningJobManager: typeof import('./components/AppFinetuningJobManager.vue')['default']
     AppImages: typeof import('./components/AppImages.vue')['default']
     AppInput: typeof import('./components/AppInput.vue')['default']
     AppMessages: typeof import('./components/AppMessages.vue')['default']
@@ -34,5 +37,6 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SideBar: typeof import('./components/SideBar.vue')['default']
+    ToolBar: typeof import('./components/ToolBar.vue')['default']
   }
 }

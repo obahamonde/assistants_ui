@@ -14,9 +14,10 @@ const useChat = async (content: string) => {
     model: state.current.model,
     messages: state.current.messages,
   });
-  const text = response.choices[0].message.content;
-  if (text) {
-    state.current.messages.push({ role: "assistant", content: text });
+  const data = response.choices[0].message.content;
+
+  if (data) {
+    state.current.messages.push({ role: "assistant", content: data });
   }
 };
 </script>

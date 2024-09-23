@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import { useTimeoutFn } from "@vueuse/core";
 import { OpenAI } from "openai";
-import { computed, ref } from "vue";
-
 const prompt = ref("");
 const size = ref<
   "256x256" | "512x512" | "1024x1024" | "1024x1792" | "1792x1024"
@@ -12,6 +9,13 @@ const style = ref<"vivid" | "natural">("vivid");
 const generatedImageUrl = ref("");
 const isLoading = ref(false);
 const error = ref("");
+
+// New refs for variations and edits
+const selectedFile = ref<File | null>(null);
+const maskFile = ref<File | null>(null);
+const variationPrompt = ref("");
+const editPrompt = ref("");
+const mode = ref<"generate" | "edit" | "variation">("generate");
 
 const sizes = [
   { value: "256x256", label: "256x256" },
@@ -31,9 +35,23 @@ const styles: { value: "vivid" | "natural"; label: string }[] = [
   { value: "natural", label: "Natural" },
 ];
 
-const isGenerateDisabled = computed(
-  () => !prompt.value.trim() || isLoading.value,
-);
+const isGenerateDisabled = computed(() => {
+  if (mode.value === "generate") {
+    return !prompt.value.trim() || isLoading.value;
+  } else if (mode.value === "edit") {
+    return !selectedFile.value || !editPrompt.value.trim() || isLoading.value;
+  } else {
+    return (
+      !selectedFile.value || !variationPrompt.value.trim() || isLoading.value
+    );
+  }
+});
+
+const ai = new OpenAI({
+  baseURL: "https://indiecloud.co/v1",
+  apiKey: "[EMPTY]",
+  dangerouslyAllowBrowser: true,
+});
 
 const generateImage = async () => {
   if (isGenerateDisabled.value) return;
@@ -41,28 +59,66 @@ const generateImage = async () => {
   isLoading.value = true;
   error.value = "";
   generatedImageUrl.value = "";
-  const ai = new OpenAI({
-    baseURL: "https://indiecloud.co/v1",
-    apiKey: "[EMPTY]",
-    dangerouslyAllowBrowser: true,
-  });
+  let response;
   try {
-    const response = await ai.images.generate({
-      prompt: prompt.value,
-      size: size.value,
-      quality: quality.value,
-      style: style.value,
-      n: 1,
-      response_format: "url",
-    });
-
-    const imageUrl = response.data[0].url;
-    if (!imageUrl) throw new Error("Failed to generate image");
-    generatedImageUrl.value = imageUrl;
-  } catch (err: any) {
-    error.value = err.message || "An error occurred";
+    size.value in ["1024x1792", "1792x1024"]
+      ? (size.value = "1024x1024")
+      : (size.value = "512x512");
+    if (mode.value === "generate") {
+      response = await ai.images.generate({
+        prompt: prompt.value,
+        size: size.value,
+        quality: quality.value,
+        style: style.value,
+        n: 1,
+        response_format: "url",
+      });
+    } else if (mode.value === "edit") {
+      if (!selectedFile.value) throw new Error("No image selected");
+      if (!maskFile.value) {
+        response = await ai.images.edit({
+          image: selectedFile.value,
+          prompt: editPrompt.value,
+          size: size.value,
+          n: 1,
+          response_format: "url",
+        });
+      } else {
+        response = await ai.images.edit({
+          image: selectedFile.value,
+          prompt: editPrompt.value,
+          mask: maskFile.value,
+          size: size.value,
+          n: 1,
+          response_format: "url",
+        });
+      }
+    } else {
+      if (!selectedFile.value) throw new Error("No image selected");
+      response = await ai.images.createVariation({
+        image: selectedFile.value,
+        prompt: variationPrompt.value,
+        size: size.value
+      });
+    }
+    const url = response.data[0].url;
+    if (!url) throw new Error("No image generated");
+    generatedImageUrl.value = url;
+  } catch (e) {
+    error.value = e as string;
   } finally {
     isLoading.value = false;
+  }
+};
+
+const handleFileChange = (event: Event, fileType: "main" | "mask") => {
+  const target = event.target as HTMLInputElement;
+  if (target.files) {
+    if (fileType === "main") {
+      selectedFile.value = target.files[0];
+    } else {
+      maskFile.value = target.files[0];
+    }
   }
 };
 
@@ -74,6 +130,7 @@ const { start: startShimmer } = useTimeoutFn(
   { immediate: false },
 );
 </script>
+
 <template>
   <div
     class="flex flex-col items-center justify-center min-h-screen p-8 bg-gradient-to-br from-primary to-secondary text-gray-800 w-full"
@@ -87,25 +144,132 @@ const { start: startShimmer } = useTimeoutFn(
         ></div>
         AI Image Generator
       </h1>
+
       <div class="mb-6">
-        <label class="block text-sm font-medium mb-2" for="prompt"
-          >Prompt</label
-        >
-        <div class="relative">
-          <input
-            id="prompt"
-            v-model="prompt"
-            type="text"
-            class="w-full px-4 py-2 rounded-lg bg-white/50 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-300"
-            placeholder="Describe the image you want to generate..."
-            @keydown.enter="generateImage"
-          />
-          <div
-            class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"
+        <div class="flex justify-center space-x-4 mb-4">
+          <button
+            @click="mode = 'generate'"
+            :class="[
+              'px-4 py-2 rounded-lg transition-all duration-300',
+              mode === 'generate'
+                ? 'bg-accent text-white'
+                : 'bg-white/50 text-gray-800',
+            ]"
           >
-            <div class="i-mdi-magic text-2xl text-accent"></div>
-          </div>
+            Generate
+          </button>
+          <button
+            @click="mode = 'edit'"
+            :class="[
+              'px-4 py-2 rounded-lg transition-all duration-300',
+              mode === 'edit'
+                ? 'bg-accent text-white'
+                : 'bg-white/50 text-gray-800',
+            ]"
+          >
+            Edit
+          </button>
+          <button
+            @click="mode = 'variation'"
+            :class="[
+              'px-4 py-2 rounded-lg transition-all duration-300',
+              mode === 'variation'
+                ? 'bg-accent text-white'
+                : 'bg-white/50 text-gray-800',
+            ]"
+          >
+            Variation
+          </button>
         </div>
+
+        <template v-if="mode === 'generate'">
+          <label class="block text-sm font-medium mb-2" for="prompt"
+            >Prompt</label
+          >
+          <div class="relative">
+            <input
+              id="prompt"
+              v-model="prompt"
+              type="text"
+              class="w-full px-4 py-2 rounded-lg bg-white/50 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-300"
+              placeholder="Describe the image you want to generate..."
+              @keydown.enter="generateImage"
+            />
+            <div
+              class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"
+            >
+              <div class="i-mdi-magic text-2xl text-accent"></div>
+            </div>
+          </div>
+        </template>
+
+        <template v-else-if="mode === 'edit'">
+          <div class="mb-4">
+            <label class="block text-sm font-medium mb-2" for="editImage"
+              >Image to Edit</label
+            >
+            <input
+              id="editImage"
+              type="file"
+              accept="image/*"
+              @change="(e) => handleFileChange(e, 'main')"
+              class="w-full px-4 py-2 rounded-lg bg-white/50 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-300"
+            />
+          </div>
+          <div class="mb-4">
+            <label class="block text-sm font-medium mb-2" for="maskImage"
+              >Mask Image (Optional)</label
+            >
+            <input
+              id="maskImage"
+              type="file"
+              accept="image/*"
+              @change="(e) => handleFileChange(e, 'mask')"
+              class="w-full px-4 py-2 rounded-lg bg-white/50 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-300"
+            />
+          </div>
+          <div class="mb-4">
+            <label class="block text-sm font-medium mb-2" for="editPrompt"
+              >Edit Prompt</label
+            >
+            <input
+              id="editPrompt"
+              v-model="editPrompt"
+              type="text"
+              class="w-full px-4 py-2 rounded-lg bg-white/50 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-300"
+              placeholder="Describe the edits you want to make..."
+              @keydown.enter="generateImage"
+            />
+          </div>
+        </template>
+
+        <template v-else>
+          <div class="mb-4">
+            <label class="block text-sm font-medium mb-2" for="variationImage"
+              >Image for Variation</label
+            >
+            <input
+              id="variationImage"
+              type="file"
+              accept="image/*"
+              @change="(e) => handleFileChange(e, 'main')"
+              class="w-full px-4 py-2 rounded-lg bg-white/50 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-300"
+            />
+          </div>
+          <div class="mb-4">
+            <label class="block text-sm font-medium mb-2" for="variationPrompt"
+              >Variation Prompt</label
+            >
+            <input
+              id="variationPrompt"
+              v-model="variationPrompt"
+              type="text"
+              class="w-full px-4 py-2 rounded-lg bg-white/50 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-300"
+              placeholder="Describe the variation you want..."
+              @keydown.enter="generateImage"
+            />
+          </div>
+        </template>
       </div>
 
       <div class="grid grid-cols-3 gap-4 mb-6">
@@ -175,7 +339,15 @@ const { start: startShimmer } = useTimeoutFn(
           icon="mdi-loading animate-spin inline-block mr-2"
         />
         <Icon v-else icon="mdi-camera inline-block mr-2" />
-        {{ isLoading ? "Generating..." : "Generate Image" }}
+        {{
+          isLoading
+            ? "Processing..."
+            : mode === "generate"
+              ? "Generate Image"
+              : mode === "edit"
+                ? "Edit Image"
+                : "Create Variation"
+        }}
       </button>
 
       <div v-if="error" class="mt-4 p-4 bg-error/20 text-error rounded-lg">
@@ -207,3 +379,4 @@ const { start: startShimmer } = useTimeoutFn(
     </div>
   </div>
 </template>
+

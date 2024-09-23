@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { User } from "@auth0/auth0-vue";
 import { ref } from 'vue';
-const props = defineProps<{ user: User }>();
+const props = defineProps<{ user: User, logout: () => void }>();
 const routes = ref([
   { name: "Chat", icon: "mdi:chat", to: `/chat/${props.user.sub}` },
   { name: "Images", icon: "mdi:image", to: "/images" },
@@ -33,8 +33,7 @@ const setActiveRoute = (routeName: string) => {
             </div>
             <span class="mt-1 text-xs font-medium text-white opacity-80 group-hover:opacity-100">{{ route.name }}</span>
           </RouterLink>
-          <div
-            v-if="activeRoute === route.name"
+          <div v-if="activeRoute === route.name"
             class="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-accent to-warning animate-pulse"
           ></div>
         </li>

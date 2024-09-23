@@ -62,16 +62,6 @@ type CosimResult = {
   score: number;
 };
 
-type SearchState = {
-  query: string;
-  top_k: number;
-  vector_store_id: string;
-};
-
-type SearchResponse = {
-  results: CosimResult[];
-};
-
 const props = defineProps<{
   namespace: string;
 }>();

@@ -1,15 +1,15 @@
-import { setupLayouts } from "virtual:generated-layouts";
-import { createPinia } from "pinia";
-import { createRouter, createWebHistory } from "vue-router";
-import { createApp } from "vue";
-import { Icon } from "@iconify/vue";
-import App from "./App.vue";
-import generatedRoutes from "~pages";
-import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 import { createAuth0 } from "@auth0/auth0-vue";
+import { Icon } from "@iconify/vue";
+import { createPinia } from "pinia";
+import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
+import { setupLayouts } from "virtual:generated-layouts";
+import { createApp } from "vue";
+import { createRouter, createWebHistory } from "vue-router";
+import generatedRoutes from "~pages";
+import App from "./App.vue";
 
-import "./styles/main.scss";
 import "uno.css";
+import "./styles/main.scss";
 
 const routes = setupLayouts(generatedRoutes);
 const router = createRouter({
@@ -18,7 +18,8 @@ const router = createRouter({
 });
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
-createApp(App)
+const app = createApp(App)
+app
   .use(pinia)
   .component("Icon", Icon)
   .use(
@@ -32,4 +33,4 @@ createApp(App)
   )
   .use(router)
 
-  .mount("#app");
+app.mount("#app");

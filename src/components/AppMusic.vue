@@ -38,7 +38,6 @@ const jobState = reactive<JobState>({
   error: null,
 });
 
-
 const jsonData = reactive<JobRequest>({
   prompt: "",
   previous: "",
