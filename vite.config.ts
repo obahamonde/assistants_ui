@@ -38,7 +38,7 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: "../static",
+    outDir: "web",
     emptyOutDir: true,
   },
   plugins: [
