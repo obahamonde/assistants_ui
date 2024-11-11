@@ -7,8 +7,6 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    AppAudio: (typeof import("./components/AppAudio.vue"))["default"]
-    AppBuilder: (typeof import("./components/AppBuilder.vue"))["default"]
     AppChatInput: typeof import('./components/AppChatInput.vue')['default']
     AppDnD: typeof import('./components/AppDnD.vue')['default']
     AppEditor: typeof import('./components/AppEditor.vue')['default']
@@ -20,15 +18,14 @@ declare module 'vue' {
     AppMessages: typeof import('./components/AppMessages.vue')['default']
     AppMusic: typeof import('./components/AppMusic.vue')['default']
     AppSearch: typeof import('./components/AppSearch.vue')['default']
+    AppSideBar: typeof import('./components/AppSideBar.vue')['default']
     AppSpeech: typeof import('./components/AppSpeech.vue')['default']
     AppStores: typeof import('./components/AppStores.vue')['default']
     AppTextBlock: typeof import('./components/AppTextBlock.vue')['default']
-    AppToolInput: typeof import('./components/AppToolInput.vue')['default']
+    AppToolBar: typeof import('./components/AppToolBar.vue')['default']
     AppTools: typeof import('./components/AppTools.vue')['default']
     AppTranscriptions: typeof import('./components/AppTranscriptions.vue')['default']
     AppUser: typeof import('./components/AppUser.vue')['default']
-    AppView: typeof import('./components/AppView.vue')['default']
-    Artifacts: typeof import('./components/Artifacts.vue')['default']
     Auth: typeof import('./components/Auth.vue')['default']
     Navbar: typeof import('./components/Navbar.vue')['default']
     Notifier: typeof import('./components/Notifier.vue')['default']
@@ -37,6 +34,5 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SideBar: typeof import('./components/SideBar.vue')['default']
-    ToolBar: typeof import('./components/ToolBar.vue')['default']
   }
 }

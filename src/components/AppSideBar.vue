@@ -168,7 +168,7 @@ const handleShowArtifacts = () => {
       ref="sidebarRef"
       :class="[
         'fixed top-0 right-0 h-full px-8 text-white bg-gradient-to-br animate-gradient-bg overflow-y-auto backdrop-blur-sm z-50 shadow-xl',
-        'transition-all duration-300 ease-in-out z-40',
+        'transition-all duration-300 ease-in-out z-40  max-w-50vw',
         sidebarOpen ? 'translate-x-0' : 'translate-x-full',
       ]"
       :style="{ width: `${sidebarWidth}px` }"

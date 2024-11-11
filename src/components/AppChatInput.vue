@@ -3,7 +3,7 @@ import { OpenAI } from "openai";
 const { state } = useStore();
 
 const client = new OpenAI({
-  baseURL: "https://indiecloud.co/v1",
+  baseURL: "https://completions-244469163250.southamerica-west1.run.app",
   apiKey: "sk-proj-1234567890",
   dangerouslyAllowBrowser: true,
 });

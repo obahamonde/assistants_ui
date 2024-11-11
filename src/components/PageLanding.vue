@@ -4,8 +4,8 @@ const props = defineProps<{
 }>();
 const cards = ref([
   {
-    title: "",
-    description: "A knowledge database focused on user productivity.",
+    title: "LiteOpenAI",
+    description: "An OpenAI alternative for indie creators.",
     image: "/favicon.svg",
     content:
       " is our cutting-edge knowledge database designed to enhance user productivity. It offers advanced organization, quick retrieval, and seamless integration with your existing workflows.",

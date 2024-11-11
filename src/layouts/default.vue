@@ -25,13 +25,14 @@ onUnmounted(() => {
     <SideBar :namespace="state.user.sub!" :logout="logout" v-if="state.user" />
     <RouterView />
     <transition name="apple-slide">
-      <ToolBar
+      <AppToolBar
         v-if="showToolBar"
         :user="state.user"
-        class="z-50 fixed bottom-0 left-0 right-0 slide-in-bottom ease-in-out 1s dock"
+        :logout="logout"
+        class="z-50 fixed bottom-0 left-0 right-0 slide-in-bottom ease-in-out 1s dock  gap-4"
       />
     </transition>
-    <Artifacts :namespace="state.user.sub!" v-if="state.user" />
+    <AppSideBar :namespace="state.user.sub!" v-if="state.user" />
   </main>
 </template>
 

@@ -1,25 +1,42 @@
 <script setup lang="ts">
-import { useAuth0 } from "@auth0/auth0-vue";
-useTitle("Home");
-useFavicon("/favicon.png");
-const { logout } = useAuth0();
-const { state } = useStore()
-
-
+const useTools = ref<boolean>(false);
+const { state } = useStore();
 </script>
-
 <template>
-  <section class="col center overflow-auto">
-<Auth>
-<template v-if="state.user">
-<AppView :user="state.user" v-if="state.user" :logout="logout" />
-        <Icon icon="mdi:loading" class="animate-spin" v-else />
-      </template>
-      <template #landing="{ login }" >
-        <section class="h-full w-full">
-          <PageLanding :login="login" />
-        </section>
-      </template>
-    </Auth>
-  </section>
+  <div class="col center p-8 overflow-y-auto">
+    <div class="row center mx-auto gap-4">
+      <section class="col center gap-4">
+        <div class="z-50 mx-auto top-4 fixed">
+          <AppChatInput
+            :useTools="useTools"
+            v-if="!useTools"
+            class="animate-fade-in"
+          />
+        </div>
+        <AppMessages
+          :messages="state.current.messages"
+          :modelPicture="state.current.model.toLowerCase()"
+          :user="state.user"
+          v-if="state.user && !useTools"
+        />
+        <AppTools
+          :messages="state.queue.messages"
+          :modelPicture="state.current.model.toLowerCase()"
+          :user="state.user"
+          v-if="state.user && useTools"
+        />
+      </section>
+    </div>
+  </div>
 </template>
+
+<style scoped>
+textarea {
+  width: 100%;
+  height: 100px;
+  border: none;
+  border-radius: 8px;
+  padding: 8px;
+  margin-bottom: 8px;
+}
+</style>

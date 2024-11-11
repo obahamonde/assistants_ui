@@ -97,7 +97,6 @@ const generateImage = async () => {
       if (!selectedFile.value) throw new Error("No image selected");
       response = await ai.images.createVariation({
         image: selectedFile.value,
-        prompt: variationPrompt.value,
         size: size.value
       });
     }
